@@ -1,6 +1,6 @@
 # -*- make -*-
 # FILE: "/home/evmik/src/my_src/robocode_bots/robocode_bots.IWillFireNoBullet/Makefile"
-# LAST MODIFICATION: "Fri, 31 Jul 2015 01:19:23 -0400 (evmik)"
+# LAST MODIFICATION: "Sat, 01 Aug 2015 12:29:42 -0400 (evmik)"
 # (C) 2012 by Eugeniy Mikhailov, <evgmik@gmail.com>
 # $Id:$
 
@@ -23,13 +23,7 @@ OUTDIR = out
 JAVAC = /usr/lib/jvm/java-7-openjdk-i386/bin/javac
 JFLAGS = -d $(OUTDIR) -classpath $(ROBOCODEJAR): -Xlint:unchecked
 
-SRC = eem/$(BOTNAME).java eem/botVersion.java \
-    $(wildcard eem/misc/*.java) \
-    $(wildcard eem/radar/*.java) \
-    $(wildcard eem/motion/*.java) \
-    $(wildcard eem/bullets/*.java) \
-    $(wildcard eem/gun/*.java) \
-    $(wildcard eem/target/*.java)
+SRC = $(shell find $(SUPERPACKADE) -type f -name *.java)
 
 CLASSES=$(SRC:%.java=$(OUTDIR)/%.class)
 
