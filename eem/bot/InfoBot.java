@@ -244,14 +244,12 @@ public class InfoBot {
 		} else {
 			return;
 		}
-		//logger.dbg("bot name = " + this.getName() );
-		//logger.dbg("bot stat = " + bsLast.format() );
+		long roundStartTime = physics.getRoundStartTime( bsLast.getTime() );
 		while (bLIter.hasPrevious()) {
 			bsPrev = bLIter.previous();
-			if ( bsLast.getTime() <= bsPrev.getTime() ) 
+			if ( bsPrev.getTime() < roundStartTime ) 
 				return; // we see previous round point
 			graphics.drawLine( g, bsLast.getPosition(), bsPrev.getPosition() );
-			//logger.dbg("bot stat = " + bsPrev.format() );
 			bsLast = bsPrev;
 		}
 
