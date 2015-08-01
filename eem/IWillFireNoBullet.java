@@ -148,7 +148,8 @@ public class IWillFireNoBullet extends AdvancedRobot
 		// to keep our own time increasing along the battle
 		// we add to this time 100000*round_number
 		// this big enough to separate rounds 
-		return ( super.getTime() + 100000*(getRoundNum()+1) ); 
+		return physics.ticTimeFromTurnAndRound( super.getTime(), getRoundNum() );
+		//return ( super.getTime() + 100000*(getRoundNum()+1) ); 
 	}
 
 	public String fightType() {
