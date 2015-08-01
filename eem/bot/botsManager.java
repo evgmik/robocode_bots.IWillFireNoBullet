@@ -81,7 +81,6 @@ public class  botsManager {
 		return l;
 	}
 
-
 	public void onRobotDeath(RobotDeathEvent e) {
 		String botName = e.getName();
 		InfoBot dBot = bots.get(botName);
@@ -94,6 +93,17 @@ public class  botsManager {
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
+	}
+
+	public void updateMyself(IWillFireNoBullet myBot) {
+		String botName = myBot.getName();
+		InfoBot iBot = bots.get(botName);
+		if ( iBot == null ) {
+		       	// this is newly discovered bot
+			iBot = new InfoBot(botName);
+		}
+		iBot.update( new botStatPoint(myBot) );
+		bots.put(botName, iBot);
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {

@@ -126,6 +126,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 
 		myCoord.x = getX();
 	       	myCoord.y = getY();
+		_botsmanager.updateMyself(this);
 
 		
 		profiler.start( "_motion.initTic" );
