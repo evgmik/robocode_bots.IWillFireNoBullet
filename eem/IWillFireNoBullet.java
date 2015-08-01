@@ -1,5 +1,6 @@
 package eem;
 import eem.radar.*;
+import eem.bot.*;
 import eem.misc.*;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 
 	private botVersion botVer;
 	public radar _radar;
+	public botsManager _botsmanager;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
 	public long initTicStartTime = 0;
@@ -93,6 +95,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 		}
 
 		_radar = new radar(this);
+		_botsmanager = new botsManager(this);
 
 		// give ScannedRobotEvent almost the highest priority,
 		// otherwise when I process bullet related events
@@ -195,6 +198,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	       	myCoord.y = getY();
 
 		_radar.onScannedRobot(e);
+		_botsmanager.onScannedRobot(e);
 	}
 
 	/**
@@ -221,6 +225,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	}
 	
 	public void onPaint(Graphics2D g) {
+		_botsmanager.onPaint(g);
 	}
 
 	public void onWin(WinEvent  e) {
