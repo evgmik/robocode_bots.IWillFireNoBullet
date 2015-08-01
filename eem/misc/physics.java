@@ -14,6 +14,9 @@ public class physics {
 	public static Point2D.Double BattleField = new Point2D.Double(0,0);
 	public static double coolingRate = 0.1; 
 	public static double minimalAllowedBulletEnergy = 0.1; 
+	// using maxTurnsInRound to have ticTime growing Round independent
+	// robocode itself reset Turn=getTime() to 0 every Round
+	public static long maxTurnsInRound = 100000; // maximum # of Turns/Tics per round
 
 	public static void init(AdvancedRobot myBot) {
 		robotHalfSize = (int) myBot.getWidth()/2;
@@ -21,6 +24,15 @@ public class physics {
 		BattleField = new Point2D.Double(myBot.getBattleFieldWidth(), myBot.getBattleFieldHeight());
 		coolingRate = myBot.getGunCoolingRate();
 	}
+
+	public static long ticTimeFromTurnAndRound ( long Turn, long Round ) {
+		return Turn + (Round+1)*maxTurnsInRound;
+	}
+
+	public static long getRoundStartTime(long ticTime) {
+		return (long) Math.floor(ticTime/maxTurnsInRound)*maxTurnsInRound;
+	}
+
 
 	public static int gunCoolingTime( double heat ) {
 		return (int) Math.ceil( heat/coolingRate );
