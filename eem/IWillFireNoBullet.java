@@ -1,5 +1,6 @@
 package eem;
 import eem.radar.*;
+import eem.motion.*;
 import eem.bot.*;
 import eem.misc.*;
 
@@ -26,6 +27,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 
 	private botVersion botVer;
 	public radar _radar;
+	public basicMotion _motion;
 	public botsManager _botsmanager;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
@@ -72,13 +74,14 @@ public class IWillFireNoBullet extends AdvancedRobot
 			}
 		}
 
+		physics.init(this); // BattleField must be set
+		math.init(this); // BattleField must be set
+
 		roundCnt = getRoundNum() + 1;
 		logger.routine("=========== Round #" + (roundCnt) + "=============");
 		BattleField = new Point2D.Double(getBattleFieldWidth(), getBattleFieldHeight());
-		robotHalfSize = (int) getWidth()/2;
+		robotHalfSize = physics.robotHalfSize;
 
-		physics.init(this); // BattleField must be set
-		math.init(this); // BattleField must be set
 
 		myCoord = new Point2D.Double( getX(), getY() );
 
@@ -95,6 +98,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 		}
 
 		_radar = new radar(this);
+		_motion = new basicMotion(this);
 		_botsmanager = new botsManager(this);
 
 		// give ScannedRobotEvent almost the highest priority,
@@ -136,6 +140,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 		profiler.stop( "_gun.initTic" );
 		
 		_radar.initTic();
+		_motion.moveToPoint( new Point2D.Double(physics.BattleField.x/2, physics.BattleField.y/2) );
 
 	}
 
