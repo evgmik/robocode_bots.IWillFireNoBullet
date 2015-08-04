@@ -35,7 +35,7 @@ public class gameInfo {
 
 	public void initTic() {
 		_radar.initTic();
-		_botsmanager.updateMyself(myBot);
+		_botsmanager.initTic(myBot.getTime());
 	}
 
 	public void run() {

@@ -4,6 +4,8 @@ package eem.bot;
 
 import eem.IWillFireNoBullet;
 import eem.bot.*;
+import eem.wave.*;
+import eem.gameInfo.*;
 import eem.misc.*;
 
 import java.awt.geom.Point2D;
@@ -50,6 +52,7 @@ public class  botsManager {
 	}
 
 	public void initTic(long ticTime) {
+		updateMyself(myBot);
 		profiler.start( "botsManager.initTic" );
 		for (InfoBot bot : bots.values()) 
 		{
@@ -57,6 +60,7 @@ public class  botsManager {
 		}
 		profiler.stop( "botsManager.initTic" );
 	}
+
 
 	public LinkedList<InfoBot> listOfKnownBots() {
 		LinkedList<InfoBot> l = new LinkedList<InfoBot>();
@@ -107,7 +111,6 @@ public class  botsManager {
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		long startTime = System.nanoTime();
 		String botName = e.getName();
 		InfoBot iBot = bots.get(botName);
 		if ( iBot == null ) {
@@ -116,7 +119,14 @@ public class  botsManager {
 		}
 		iBot.update( new botStatPoint(myBot, e) );
 		bots.put(botName, iBot);
-		logger.profiler("botsManager.onScannedRobot execution time =\t\t\t\t" + (System.nanoTime() - startTime) + " ns" );
+		double eDrop = iBot.energyDrop();
+		if ( eDrop > 0 ) {
+			// wave/bullet is fired
+			// FIXME: be smarter about it: check collisions and bullets hits
+			// enemy energy drop detected by one tic later thus -1
+			myBot._gameinfo._wavesManager.add(iBot, myBot.getTime()-1, eDrop );
+			logger.noise("enemy wave detected at "+myBot.getTime());
+		}
 	}
 
 	public void onPaint(Graphics2D g) {
