@@ -2,6 +2,8 @@ package eem;
 import eem.radar.*;
 import eem.motion.*;
 import eem.bot.*;
+import eem.wave.*;
+import eem.gameInfo.*;
 import eem.misc.*;
 
 import java.io.IOException;
@@ -26,9 +28,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	public int robotHalfSize;
 
 	private botVersion botVer;
-	public radar _radar;
-	public basicMotion _motion;
-	public botsManager _botsmanager;
+	public gameInfo _gameinfo;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
 	public long initTicStartTime = 0;
@@ -97,9 +97,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 			skippedTurnStats = new int[getNumRounds()];
 		}
 
-		_radar = new radar(this);
-		_motion = new basicMotion(this);
-		_botsmanager = new botsManager(this);
+		_gameinfo = new gameInfo(this);
 
 		// give ScannedRobotEvent almost the highest priority,
 		// otherwise when I process bullet related events
@@ -130,7 +128,6 @@ public class IWillFireNoBullet extends AdvancedRobot
 
 		myCoord.x = getX();
 	       	myCoord.y = getY();
-		_botsmanager.updateMyself(this);
 
 		
 		profiler.start( "_motion.initTic" );
@@ -139,8 +136,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 		profiler.start( "_gun.initTic" );
 		profiler.stop( "_gun.initTic" );
 		
-		_radar.initTic();
-		_motion.moveToPoint( new Point2D.Double(physics.BattleField.x/2, physics.BattleField.y/2) );
+		_gameinfo.initTic();
 
 	}
 
@@ -190,9 +186,8 @@ public class IWillFireNoBullet extends AdvancedRobot
 
 			//FIXME
 			//_radar.setNeedToTrackTarget( _gun.doesItNeedTrackedTarget() );
-			_radar.manage();
 			
-			execute();
+			_gameinfo.run();
 		}
 	}
 
@@ -204,8 +199,6 @@ public class IWillFireNoBullet extends AdvancedRobot
 		myCoord.x = getX();
 	       	myCoord.y = getY();
 
-		_radar.onScannedRobot(e);
-		_botsmanager.onScannedRobot(e);
 	}
 
 	/**
@@ -232,7 +225,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	}
 	
 	public void onPaint(Graphics2D g) {
-		_botsmanager.onPaint(g);
+		_gameinfo.onPaint(g);
 	}
 
 	public void onWin(WinEvent  e) {

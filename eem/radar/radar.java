@@ -79,7 +79,7 @@ public class radar {
 	public void moveRadarToBot( String bName ) {
 		logger.noise("Spinning radar to bot"+bName);
 		double angle = 0;
-		long lastSeenDelay = myBot.ticTime -  myBot._botsmanager.getBotByName( bName ).getLastSeenTime();
+		long lastSeenDelay = myBot.ticTime -  myBot._gameinfo._botsmanager.getBotByName( bName ).getLastSeenTime();
 		if ( botToSearchFor.equals( bName ) && (lastSeenDelay > 1) ) {
 			// we already set radar motion parameters
 			angle = radarSpinDirection*radarMaxRotationAngle;
@@ -88,7 +88,7 @@ public class radar {
 			// can be used for radar spin calculations
 			botToSearchFor = bName;
 			double radar_heading = myBot.getRadarHeading();
-			double angleToLastBotPosition = math.angle2pt(myBot.myCoord, myBot._botsmanager.getBotByName( bName ).getPosition() );
+			double angleToLastBotPosition = math.angle2pt(myBot.myCoord, myBot._gameinfo._botsmanager.getBotByName( bName ).getPosition() );
 			angle= angleToLastBotPosition - radar_heading;
 			angle = math.shortest_arc(angle);
 			radarSpinDirection = math.signNoZero(angle);
