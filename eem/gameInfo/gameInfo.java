@@ -34,13 +34,13 @@ public class gameInfo {
 	}
 
 	public void initTic() {
-		_motion.moveToPoint( new Point2D.Double(physics.BattleField.x/2, physics.BattleField.y/2) );
 		_radar.initTic();
 		_botsmanager.updateMyself(myBot);
 	}
 
 	public void run() {
 		_radar.manage();
+		_motion.moveToPoint( new Point2D.Double(physics.BattleField.x/2, physics.BattleField.y/2) );
 		myBot.execute();
 	}
 
