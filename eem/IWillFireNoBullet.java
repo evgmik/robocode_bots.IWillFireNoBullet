@@ -199,6 +199,8 @@ public class IWillFireNoBullet extends AdvancedRobot
 		myCoord.x = getX();
 	       	myCoord.y = getY();
 
+		_gameinfo.onScannedRobot(e);
+
 	}
 
 	/**
