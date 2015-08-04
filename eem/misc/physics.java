@@ -12,7 +12,7 @@ public class physics {
 	public static int robotHalfSize = 0;
 	public static double robotRadius = 0;
 	public static Point2D.Double BattleField = new Point2D.Double(0,0);
-	public static double coolingRate = 0.1; 
+	public static double coolingRate = 0; 
 	public static double minimalAllowedBulletEnergy = 0.1; 
 	// using maxTurnsInRound to have ticTime growing Round independent
 	// robocode itself reset Turn=getTime() to 0 every Round
