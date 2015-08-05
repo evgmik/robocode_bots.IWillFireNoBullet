@@ -44,7 +44,6 @@ public class  wavesManager {
 				}
 			}
 			if ( !isWaveActive ) {
-				logger.dbg("wave is inactive");
 				wLIter.remove();
 			}
 		}
