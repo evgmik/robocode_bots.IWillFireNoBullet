@@ -167,7 +167,7 @@ public class InfoBot {
 
 	public botStatPoint getStatAtTime(long time) {
 		// return position at given time
-		// the main use to find exactly previous time for 
+		// the main use to find exactly previous time for
 		// enemy bullets targeting.
 		// Thus we count from the end
 		int N = botStats.size();
@@ -255,7 +255,7 @@ public class InfoBot {
 		long roundStartTime = physics.getRoundStartTime( bsLast.getTime() );
 		while (bLIter.hasPrevious()) {
 			bsPrev = bLIter.previous();
-			if ( bsPrev.getTime() < roundStartTime ) 
+			if ( bsPrev.getTime() < roundStartTime )
 				return; // we see previous round point
 			graphics.drawLine( g, bsLast.getPosition(), bsPrev.getPosition() );
 			bsLast = bsPrev;
