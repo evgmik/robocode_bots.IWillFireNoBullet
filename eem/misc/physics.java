@@ -7,13 +7,15 @@ import java.util.*;
 import robocode.*;
 import robocode.util.*;
 import robocode.Rules.*;
+import robocode.BattleRules.*;
 
 public class physics {
 	public static int robotHalfSize = 0;
 	public static double robotRadius = 0;
 	public static Point2D.Double BattleField = new Point2D.Double(0,0);
-	public static double coolingRate = 0; 
-	public static double minimalAllowedBulletEnergy = 0.1; 
+	public static double gunCoolingRate = 0; 
+	public static double minimalAllowedBulletEnergy = 0; 
+	public static double maximalAllowedBulletEnergy = 0; 
 	// using maxTurnsInRound to have ticTime growing Round independent
 	// robocode itself reset Turn=getTime() to 0 every Round
 	public static long maxTurnsInRound = 100000; // maximum # of Turns/Tics per round
@@ -22,7 +24,9 @@ public class physics {
 		robotHalfSize = (int) myBot.getWidth()/2;
 		robotRadius = robotHalfSize*Math.sqrt(2);
 		BattleField = new Point2D.Double(myBot.getBattleFieldWidth(), myBot.getBattleFieldHeight());
-		coolingRate = myBot.getGunCoolingRate();
+		gunCoolingRate = myBot.getGunCoolingRate(); // this sits inside robocode.BattleRules
+		minimalAllowedBulletEnergy = Rules.MIN_BULLET_POWER;
+		maximalAllowedBulletEnergy = Rules.MAX_BULLET_POWER ;
 	}
 
 	public static long ticTimeFromTurnAndRound ( long Turn, long Round ) {
@@ -33,14 +37,20 @@ public class physics {
 		return (long) Math.floor(ticTime/maxTurnsInRound)*maxTurnsInRound;
 	}
 
-
+	public static boolean isTimeInSameRound(long t1, long t2) {
+		return ( getRoundStartTime(t1) == getRoundStartTime(t2) );
+	}
 	public static int gunCoolingTime( double heat ) {
-		return (int) Math.ceil( heat/coolingRate );
+		return (int) Math.ceil( heat/gunCoolingRate );
 	}
 
 	public static double bulletSpeed( double firePower ) {
+		if ( firePower > maximalAllowedBulletEnergy ) {
+			logger.warning("bulletSpeed(): Forbiden bullet energy requested: " + firePower + " > " + maximalAllowedBulletEnergy);
+		}
 		double bSpeed;
-		bSpeed = ( 20 - firePower * 3 );
+		//bSpeed = ( 20 - firePower * 3 ); // see wiki
+		bSpeed = Rules.getBulletSpeed( firePower );
 		logger.noise("bullet speed = " + bSpeed + " for firePower = " + firePower);
 		return bSpeed;
 	}
@@ -51,7 +61,9 @@ public class physics {
 	}
 
 	public static double  bulletDamageByEnergy( double bEnergy ) {
-		double bDamage = 4*bEnergy + 2 * Math.max( bEnergy - 1 , 0 );
+		double bDamage;
+		//bDamage = 4*bEnergy + 2 * Math.max( bEnergy - 1 , 0 ); // see wiki
+		bDamage = Rules.getBulletDamage(bEnergy);
 		return bDamage;
 	}
 
