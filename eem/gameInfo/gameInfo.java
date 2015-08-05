@@ -34,8 +34,10 @@ public class gameInfo {
 	}
 
 	public void initTic() {
+		long timeNow = myBot.getTime();
 		_radar.initTic();
-		_botsmanager.initTic(myBot.getTime());
+		_botsmanager.initTic( timeNow );
+		_wavesManager.cleanUpPassedWaves( _botsmanager.listOfAliveBots(), timeNow );
 	}
 
 	public void run() {

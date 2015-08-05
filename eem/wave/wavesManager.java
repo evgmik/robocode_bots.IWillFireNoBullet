@@ -30,6 +30,26 @@ public class  wavesManager {
 		Waves.add(w);
 	}
 
+	public void cleanUpPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
+		ListIterator<wave> wLIter;
+		wLIter = Waves.listIterator();
+		while (wLIter.hasNext()) {
+			wave w = wLIter.next();
+			boolean isWaveActive = false;
+			for ( InfoBot bot : listOfAliveBots ) {
+				if ( !w.isBehindBot( bot, timeNow ) ) {
+					// the wave is still active
+					isWaveActive = true;
+					break;
+				}
+			}
+			if ( !isWaveActive ) {
+				logger.dbg("wave is inactive");
+				wLIter.remove();
+			}
+		}
+	}
+
 	public void onPaint(Graphics2D g) {
 		long timeNow = myBot.getTime();
 		for ( wave w : Waves ) {

@@ -34,6 +34,16 @@ public class wave {
 		return distTraveled;
 	}
 
+	public boolean isBehindBot(InfoBot bot, long timeNow) {
+		double distTraveled = getDistanceTraveledAtTime( timeNow );
+		Point2D.Double botPos = bot.getPosition( timeNow );
+		double distToBot = botPos.distance( firedPosition ); 
+		if ( distTraveled > distToBot + 2*physics.robotHalfSize )
+			return true;
+		else
+			return false;
+	}
+
 	public void onPaint(Graphics2D g, long timeNow) {
 		g.setColor(waveColor);
 

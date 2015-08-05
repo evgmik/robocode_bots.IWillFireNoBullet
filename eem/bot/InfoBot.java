@@ -132,6 +132,10 @@ public class InfoBot {
 		}
 	}
 
+	public Point2D.Double getPosition(long time) {
+		return getPositionAtTime( time );
+	}
+
 	public Point2D.Double getPrevTicPosition() {
 		// Return position at previous known point
 		// Watch out previous point may be many clicks away !
