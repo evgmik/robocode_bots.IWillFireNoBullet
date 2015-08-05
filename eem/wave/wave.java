@@ -18,14 +18,23 @@ public class wave {
 	protected Point2D.Double firedPosition;
 	protected long   firedTime;
 	protected double bulletSpeed;
+	protected double bulletEnergy;
 	protected Color waveColor = new Color(0xff, 0x00, 0x00, 0x80);
 
 
 	public wave(InfoBot firedBot, long firedTime, double bulletEnergy) {
 		this.firedBot = firedBot;
 		this.firedTime = firedTime;
+		this.bulletEnergy = bulletEnergy;
 		this.bulletSpeed = physics.bulletSpeed( bulletEnergy );
-		this.firedPosition = (Point2D.Double) firedBot.getPositionAtTime( firedTime ).clone(); 
+		Point2D.Double fP = firedBot.getPositionAtTime( firedTime );
+		if ( fP != null ) {
+			this.firedPosition = (Point2D.Double) fP.clone();
+		} else {
+			// we do not know position of the bot at firing time
+			// so we will use current position
+			this.firedPosition = (Point2D.Double) firedBot.getPosition().clone();
+		}
 	}
 
 	public double getDistanceTraveledAtTime(long time) {
