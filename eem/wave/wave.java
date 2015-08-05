@@ -46,6 +46,10 @@ public class wave {
 	public boolean isBehindBot(InfoBot bot, long timeNow) {
 		double distTraveled = getDistanceTraveledAtTime( timeNow );
 		Point2D.Double botPos = bot.getPosition( timeNow );
+		if ( botPos == null ) {
+			// position is unknown, using last known
+			botPos = bot.getLast().getPosition();
+		}
 		double distToBot = botPos.distance( firedPosition ); 
 		if ( distTraveled > distToBot + 2*physics.robotHalfSize )
 			return true;
