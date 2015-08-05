@@ -198,7 +198,11 @@ public class InfoBot {
 
 	public double energyDrop() {
 		if ( hasPrev() ) {
-			return  getPrev().getEnergy() - getLast().getEnergy();
+			if ( physics.isTimeInSameRound( getPrev().getTime(), getLast().getTime() ) ) {
+				return  getPrev().getEnergy() - getLast().getEnergy();
+			} else {
+				return 0;
+			}
 		} else {
 			return 0;
 		}
