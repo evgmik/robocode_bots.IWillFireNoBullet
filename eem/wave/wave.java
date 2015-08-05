@@ -19,7 +19,9 @@ public class wave {
 	protected long   firedTime;
 	protected double bulletSpeed;
 	protected double bulletEnergy;
+	protected long timeUncertaintyLower = 0; // how sure we are about firing time
 	protected Color waveColor = new Color(0xff, 0x00, 0x00, 0x80);
+	protected Color waveUncertaintyColorLower = new Color(0x00, 0x00, 0xff, 0x80);
 
 
 	public wave(InfoBot firedBot, long firedTime, double bulletEnergy) {
@@ -30,10 +32,16 @@ public class wave {
 		Point2D.Double fP = firedBot.getPositionAtTime( firedTime );
 		if ( fP != null ) {
 			this.firedPosition = (Point2D.Double) fP.clone();
+			this.timeUncertaintyLower = 0;
 		} else {
 			// we do not know position of the bot at firing time
-			// so we will use current position
-			this.firedPosition = (Point2D.Double) firedBot.getPosition().clone();
+			// but we do know that exactly the time upper bound
+			// which is firedTime since it is coming from onScannedRobot
+			// so we will use last known (i.e. current) position
+			//FIXME uncertainty logic
+			this.firedPosition = (Point2D.Double) firedBot.getLast().getPosition().clone();
+			this.timeUncertaintyLower = firedTime - firedBot.getPrev().getTime();
+			logger.noise("timeUncertaintyLower = " + timeUncertaintyLower );
 		}
 	}
 
@@ -63,5 +71,9 @@ public class wave {
 		// draw overall  wave
 		double distTraveled = getDistanceTraveledAtTime( timeNow );
 		graphics.drawCircle(g, firedPosition, distTraveled);
+		if ( timeUncertaintyLower !=  0 ) {
+			g.setColor(waveUncertaintyColorLower);
+			graphics.drawCircle(g, firedBot.getPositionAtTime(firedTime - timeUncertaintyLower), distTraveled + bulletSpeed * timeUncertaintyLower);
+		}
 	}
 }
