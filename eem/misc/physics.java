@@ -80,7 +80,7 @@ public class physics {
 		return bPower;
 	}
 
-	public double dist2LeftOrRightWall( Point2D.Double p ) {
+	public static double dist2LeftOrRightWall( Point2D.Double p ) {
 		double dLeft  = p.x; // left wall distance
 		double dRight = BattleField.x - p.x; // right wall distance
 		if ( ( dLeft <= 0 ) || ( dRight <= 0 ) ) {
@@ -90,7 +90,7 @@ public class physics {
 		return Math.min( dLeft, dRight);
 	}
 
-	public double dist2BottomOrTopWall( Point2D.Double p ) {
+	public static double dist2BottomOrTopWall( Point2D.Double p ) {
 		double dBottom = p.y; // bottom wall distance
 		double dTop    = BattleField.y - p.y; // top wall distance
 		if ( ( dTop <= 0 ) || ( dBottom <= 0 ) ) {
@@ -100,7 +100,7 @@ public class physics {
 		return Math.min( dBottom, dTop);
 	}
 
-	public double shortestDist2wall( Point2D.Double p ) {
+	public static double shortestDist2wall( Point2D.Double p ) {
 		return  Math.min( dist2LeftOrRightWall( p ), dist2BottomOrTopWall( p ) );
 	}
 }
