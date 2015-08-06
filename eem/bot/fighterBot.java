@@ -19,21 +19,21 @@ import robocode.util.*;
 import robocode.Rules.*;
 
 public class fighterBot {
-	protected InfoBot myBot;
+	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
 	protected botsManager _botsmanager;
 	protected wavesManager _wavesManager;
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
-		this.myBot = fBot;
+		this.fBot = fBot;
 		_gameinfo = gInfo;
 	}
 
 	public LinkedList<InfoBot> getEnemyBots() {
-		String myName = myBot.getName();
+		String fBotName = fBot.getName();
 		LinkedList<InfoBot> eBots = new LinkedList<InfoBot>();
 		for ( InfoBot b: _gameinfo._botsmanager.listOfAliveBots() ) {
-			if ( !myName.equals( b.getName() ) ) {
+			if ( !fBotName.equals( b.getName() ) ) {
 				eBots.add( b );
 			}
 		}
@@ -41,10 +41,10 @@ public class fighterBot {
 	}
 
 	public LinkedList<wave> getEnemyWaves() {
-		String myName = myBot.getName();
+		String fBotName = fBot.getName();
 		LinkedList<wave> eWaves = new LinkedList<wave>();
 		for ( wave w: _gameinfo._wavesManager.Waves ) {
-			if ( !myName.equals( w.firedBot.getName() ) ) {
+			if ( !fBotName.equals( w.firedBot.getName() ) ) {
 				eWaves.add( w );
 			}
 		}
