@@ -37,7 +37,7 @@ public class dangerMap {
 	}
 
 	public void calculateDangerFromWall(long time, dangerPoint dP) {
-		double dangerFromWall = 450;
+		double dangerFromWall = 1.0;
 		if ( physics.shortestDist2wall( dP.getPosition() ) <= physics.robotHalfSize ) {
 			dP.setDanger( dangerFromWall );
 		}
