@@ -26,17 +26,15 @@ public class IWillFireNoBullet extends AdvancedRobot
 {
 	public Rules game_rules;
 	double BodyTurnRate = game_rules.MAX_TURN_RATE;
-	public int robotHalfSize;
 
 	private botVersion botVer;
-	public gameInfo _gameinfo;
+	public static gameInfo _gameinfo;
 	public dangerMap _dangerMap;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
 	public long initTicStartTime = 0;
 
 	public Point2D.Double myCoord;
-	public Point2D.Double BattleField;
 	double absurdly_huge=1e6; // something huge
 	double desiredBodyRotationDirection = 0; // our robot body desired angle
 
@@ -66,6 +64,8 @@ public class IWillFireNoBullet extends AdvancedRobot
 	}
 
 	public void initBattle() {
+		roundCnt = getRoundNum() + 1;
+		// this part should be done only once and for all rounds
 		if ( fileWriter == null ) {
 			try {
 				fileWriter = new RobocodeFileWriter( this.getDataFile( logFileName ) );
@@ -76,18 +76,9 @@ public class IWillFireNoBullet extends AdvancedRobot
 			}
 		}
 
-		physics.init(this); // BattleField must be set
-		math.init(this); // BattleField must be set
-
-		roundCnt = getRoundNum() + 1;
-		logger.routine("=========== Round #" + (roundCnt) + "=============");
-		BattleField = new Point2D.Double(getBattleFieldWidth(), getBattleFieldHeight());
-		robotHalfSize = physics.robotHalfSize;
-
-
-		myCoord = new Point2D.Double( getX(), getY() );
-
-		setColors(Color.red,Color.blue,Color.green);
+		physics.init(this);
+		math.init(this);
+		setColors(Color.red,Color.blue,Color.green); //colors of by bot
 		botVer = new botVersion();
 
 		totalNumOfEnemiesAtStart = getOthers();
@@ -99,7 +90,17 @@ public class IWillFireNoBullet extends AdvancedRobot
 			skippedTurnStats = new int[getNumRounds()];
 		}
 
-		_gameinfo = new gameInfo(this);
+		if ( _gameinfo == null ) {
+			_gameinfo = new gameInfo(this);
+		}
+
+		// the part below should be done for every round
+		logger.routine("=========== Round #" + (roundCnt) + "=============");
+
+
+		myCoord = new Point2D.Double( getX(), getY() );
+
+
 		_dangerMap = new dangerMap();
 		_dangerMap.add( new Point2D.Double(125,125) );
 		_dangerMap.add( new Point2D.Double(5,5) );
