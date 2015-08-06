@@ -36,7 +36,7 @@ public class graphics {
 		}
 
 	public static Color dangerLevel2mapColor(double dLevel, int opacityTreshold) {
-		int opacity = (int) Math.abs(dLevel/3.0); // 0 - 255 but good values below 100
+		int opacity = (int) Math.abs(255*dLevel); // 0 - 255 but good values below 100
 		Color c;
 
 		if (opacity > opacityTreshold) opacity = opacityTreshold;
