@@ -27,6 +27,7 @@ public class  botsManager {
 
 	public botsManager(IWillFireNoBullet bot) {
 		myBot = bot;
+		updateMyself(bot);
 		// move deadBots to alive bots, should happen at the beginning of the round
 		if ( deadBots.size() >= 1) {
 			for (InfoBot dBot : deadBots.values() ) {
