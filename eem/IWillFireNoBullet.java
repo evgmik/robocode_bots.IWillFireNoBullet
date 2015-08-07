@@ -28,7 +28,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	double BodyTurnRate = game_rules.MAX_TURN_RATE;
 
 	private botVersion botVer;
-	public static gameInfo _gameinfo;
+	public gameInfo _gameinfo;
 	public dangerMap _dangerMap;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
@@ -90,13 +90,11 @@ public class IWillFireNoBullet extends AdvancedRobot
 			skippedTurnStats = new int[getNumRounds()];
 		}
 
-		if ( _gameinfo == null ) {
-			_gameinfo = new gameInfo(this);
-		}
 
 		// the part below should be done for every round
 		logger.routine("=========== Round #" + (roundCnt) + "=============");
 
+		_gameinfo = new gameInfo(this);
 
 		myCoord = new Point2D.Double( getX(), getY() );
 
