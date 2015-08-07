@@ -9,12 +9,8 @@ import robocode.util.*;
 import robocode.Rules.*;
 
 public class math {
-	public static int robotHalfSize = 0;
-	public static Point2D.Double BattleField = new Point2D.Double(0,0);
 
 	public static void init(AdvancedRobot myBot) {
-		robotHalfSize = (int) myBot.getWidth()/2;
-		BattleField = new Point2D.Double(myBot.getBattleFieldWidth(), myBot.getBattleFieldHeight());
 	}
 
 	public static double sqr( double x ) {
@@ -81,14 +77,6 @@ public class math {
 	}
 
 	
-	public static boolean isBotOutOfBorders( Point2D.Double pnt ) {
-		if ( ( pnt.x < robotHalfSize ) || ( pnt.x > (BattleField.x - robotHalfSize) ) )
-			return true;
-		if ( ( pnt.y < robotHalfSize ) || ( pnt.y > (BattleField.y - robotHalfSize) ) )
-			return true;
-		return false;
-	}
-
 	public static double eventRate(double nEvents, double nTotal) {
 		return nEvents / Math.max( nTotal, 1 );
 	}
@@ -224,119 +212,9 @@ public class math {
 		return hit_pnt;
 	}
 
-	public static double calculateMEA( double bulletSpeed ) {
-			// Max escape angle in degree for a given bullet speed
-			double maxBulletSpeed = 8; // TODO move ro robocode physics class
-			double MEA = 180/Math.PI*Math.asin( maxBulletSpeed/bulletSpeed );
-			return MEA;
-	}
-
 	public static double bin2gf( int gfBin, int numBins ) {
 		return 2.0*gfBin/(numBins-1.0) - 1.0;
 	}
 
-	public static String whichWallAhead(Point2D.Double pos, double speed, double headingInRadians) {
-		// due to round offs bot position might appear inside of walls
-		// below give us some margin to account for it
-		double wall_margin = 1;
-		double x = pos.x;
-		double y = pos.y;
-		double huge = 1e100; // humongous number
-
-		String wallName="";
-
-		if ( Utils.isNear(speed, 0.0) ) {
-			// we are not moving anywhere 
-			//find the closest wall
-			double dist = x;
-			double dist_temp=0;
-			wallName = "left";
-
-			dist_temp = y;
-			if ( dist_temp < dist ) { 
-				dist = y;
-				wallName = "bottom";
-			}
-			
-			dist_temp = BattleField.x - x;
-			if ( dist_temp < dist ) { 
-				dist = dist_temp;
-				wallName = "right";
-			}
-			dist_temp = BattleField.y - y;
-			if ( dist_temp < dist ) { 
-				dist = dist_temp;
-				wallName = "top";
-			}
-			return wallName;
-		}
-
-		double vx = Math.sin( headingInRadians )*speed;
-		double vy = Math.cos( headingInRadians )*speed;
-
-		double time_to_sidewall, time_to_top_bottom_wall;
-
-		if ( Utils.isNear(vx, 0.0) ) {
-			// we are not moving in x direction
-			time_to_sidewall = huge;
-		} else {
-			if ( vx < 0 ) {
-				time_to_sidewall = -( x -  robotHalfSize + wall_margin )/vx;
-			} else {
-				time_to_sidewall =  ( BattleField.x - x - robotHalfSize + wall_margin )/vx;
-			}
-		}
-		if ( Utils.isNear(vy, 0.0) ) {
-			// we are not moving in y direction
-			time_to_top_bottom_wall = huge;
-		} else {
-			if ( vy < 0 ) {
-				time_to_top_bottom_wall = -( y -  robotHalfSize + wall_margin )/vy;
-			} else {
-				time_to_top_bottom_wall =  ( BattleField.y - y - robotHalfSize + wall_margin )/vy;
-			}
-		}
-
-		if ( time_to_sidewall < time_to_top_bottom_wall) {
-			// side walls are closer
-			if ( vx<0 ) {
-				wallName = "left";
-			} else {
-				wallName = "right";
-			}
-		} else {
-			// top or bootom is closer
-			if ( vy<0 ) {
-				wallName = "bottom";
-			} else {
-				wallName = "top";
-			}
-		}
-		return wallName;
-	}
-
-	public static double distanceToWallAhead( Point2D.Double pos, double speed, double headingInRadians ) {
-		double dist=0;
-
-		String wallName = whichWallAhead( pos, speed, headingInRadians);
-
-		if ( wallName.equals("left") ) {
-				dist = pos.x;
-		}	
-		if ( wallName.equals("right") ) {
-				dist = BattleField.x - pos.x;
-		}
-		if ( wallName.equals("bottom") ) {
-				dist = pos.y;
-		}
-		if ( wallName.equals("top") ) {
-				dist = BattleField.y - pos.y;
-		}
-		dist = dist - robotHalfSize;
-		dist = Math.max(dist,0);
-		if (dist < 0) dist = 0 ;
-		logger.noise("distance to closest wall ahead " + dist);
-		return dist;
-	}
 
 }
