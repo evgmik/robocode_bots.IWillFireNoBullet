@@ -229,7 +229,7 @@ public class botStatPoint {
 	}
 
 	public String whichWallAhead(botStatPoint bStatPnt) {
-		return math.whichWallAhead( bStatPnt.getPosition(), bStatPnt.getSpeed(), bStatPnt.getHeadingRadians() );
+		return physics.whichWallAhead( bStatPnt.getPosition(), bStatPnt.getSpeed(), bStatPnt.getHeadingRadians() );
 	}
 
 	public String whichWallAhead() {
@@ -237,7 +237,7 @@ public class botStatPoint {
 	}
 
 	public double distanceToWallAhead(botStatPoint bStatPnt) {
-		return math.distanceToWallAhead( bStatPnt.getPosition(), bStatPnt.getSpeed(), bStatPnt.getHeadingRadians() );
+		return physics.distanceToWallAhead( bStatPnt.getPosition(), bStatPnt.getSpeed(), bStatPnt.getHeadingRadians() );
 	}
 
 	public double distanceToWallAhead() {
