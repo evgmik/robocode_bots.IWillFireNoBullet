@@ -30,6 +30,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	private botVersion botVer;
 	public gameInfo _gameinfo;
 	public dangerMap _dangerMap;
+	public fighterBot _myFighter;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
 	public long initTicStartTime = 0;
@@ -95,6 +96,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 		logger.routine("=========== Round #" + (roundCnt) + "=============");
 
 		_gameinfo = new gameInfo(this);
+		_myFighter = new fighterBot( _gameinfo._botsmanager.getBotByName( getName() ), _gameinfo);
 
 		myCoord = new Point2D.Double( getX(), getY() );
 
@@ -234,6 +236,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	public void onPaint(Graphics2D g) {
 		_gameinfo.onPaint(g);
 		_dangerMap.onPaint(g);
+		_myFighter.onPaint(g);
 	}
 
 	public void onWin(WinEvent  e) {

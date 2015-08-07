@@ -6,6 +6,7 @@ import eem.IWillFireNoBullet;
 import eem.bot.*;
 import eem.wave.*;
 import eem.gameInfo.*;
+import eem.gun.*;
 import eem.misc.*;
 
 import java.awt.geom.Point2D;
@@ -54,7 +55,24 @@ public class fighterBot {
 	public void initTic() {
 	}
 
+	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {
+		LinkedList<InfoBot> bots = getEnemyBots();
+		
+		firingSolution fS = null;
+		for ( InfoBot b: bots ){
+			fS = new firingSolution( b.getPosition(), fBot.getPosition());
+		}
+		return fS;
+	}
+
 	public void onPaint(Graphics2D g) {
+		LinkedList<InfoBot> bots = getEnemyBots();
+		firingSolution fS = null;
+		for ( InfoBot b: bots ){
+			fS = getFiringSolutionFor( b, fBot.getLastSeenTime() );
+		}
+		if ( fS != null )
+			fS.onPaint( g );
 	}
 
 }
