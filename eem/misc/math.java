@@ -55,6 +55,11 @@ public class math {
 		return angle;
 	}
 
+	public static double game_angles2cortesian(double angle) {
+		angle=90-angle;
+		return angle;
+	}
+
 	public static double shortest_arc( double angle ) {
 		//dbg(dbg_noise, "angle received = " + angle);
 		angle = angle % 360;
