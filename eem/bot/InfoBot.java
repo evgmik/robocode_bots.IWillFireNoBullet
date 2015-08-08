@@ -189,7 +189,11 @@ public class InfoBot {
 				// and now passed the required time
 				// everything else is before required time
 				// pull back on step in future
-				return botStats.get(i+1);
+				if ( (i+1) <= (N-1) ) {
+					return botStats.get(i+1);
+				} else {
+					return null;
+				}
 			}
 		}
 		return null; // no matched time found, but we should not be here at all
@@ -203,10 +207,12 @@ public class InfoBot {
 		int N = botStats.size();
 		botStatPoint bS = null;
 		bS = getStatClosestToTime( time );
+		if ( bS == null ) // safety net
+			return null;
 		if ( bS.getTime() == time ) {
 			return bS;
 		}
-		return null; // no matched time found
+		return null; // no matched with exact time found
 	}
 
 	public long getLastSeenTime() {
