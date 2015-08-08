@@ -125,7 +125,8 @@ public class  botsManager {
 			// wave/bullet is fired
 			// FIXME: be smarter about it: check collisions and bullets hits
 			// enemy energy drop detected by one tic later thus -1
-			myBot._gameinfo._wavesManager.add(iBot, myBot.getTime()-1, eDrop );
+			wave w = new wave( iBot, myBot.getTime()-1, eDrop );
+			myBot._gameinfo._wavesManager.add( w );
 		}
 	}
 
