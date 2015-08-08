@@ -3,6 +3,7 @@
 package eem.wave;
 
 import eem.IWillFireNoBullet;
+import eem.event.*;
 import eem.bot.*;
 import eem.misc.*;
 
@@ -17,6 +18,8 @@ import java.util.*;
 public class  wavesManager {
 	public IWillFireNoBullet myBot;
 	public LinkedList<wave> Waves = new LinkedList<wave>();
+
+	public LinkedList<waveListener> waveListeners = new LinkedList<waveListener>();
 
 	public wavesManager(IWillFireNoBullet bot) {
 		myBot = bot;
@@ -33,10 +36,16 @@ public class  wavesManager {
 
 	public void add( wave w )  {
 		Waves.add( w );
+		for ( waveListener l : waveListeners ) {
+			l.waveAdded(w);
+		}
 	}
 
 	public void remove(wave w) {
 		Waves.remove( w );
+		for ( waveListener l : waveListeners ) {
+			l.waveRemoved(w);
+		}
 	}
 
 	public void remove(LinkedList<wave> wavesToRemove) {
@@ -65,6 +74,10 @@ public class  wavesManager {
 			}
 		}
 		return( passedWaves );
+	}
+
+	public void addWaveListener(waveListener l) {
+		waveListeners.add(l);
 	}
 
 	public void onPaint(Graphics2D g) {
