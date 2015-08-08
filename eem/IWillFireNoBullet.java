@@ -236,7 +236,7 @@ public class IWillFireNoBullet extends AdvancedRobot
 	public void onPaint(Graphics2D g) {
 		_gameinfo.onPaint(g);
 		_dangerMap.onPaint(g);
-		_myFighter.onPaint(g);
+		_myFighter.onPaint(g, getTime() );
 	}
 
 	public void onWin(WinEvent  e) {
