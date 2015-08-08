@@ -42,9 +42,10 @@ public class firingSolution {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			// note that dx and dy change meaning due to robocode coordinates
 			double a = math.game_angles2cortesian( firingAngle );
-			double dx = Math.cos( Math.toRadians(a) );
-			double dy = Math.sin( Math.toDegrees(a) );
+			double dx = L*Math.cos( Math.toRadians(a) );
+			double dy = L*Math.sin( Math.toRadians(a) );
 			Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
 			graphics.drawLine( g, firingPosition,  endP );
 		}
