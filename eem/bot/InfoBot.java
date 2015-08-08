@@ -165,8 +165,15 @@ public class InfoBot {
 		return bS.getPosition();
 	}
 
-	public botStatPoint getStatAtTime(long time) {
-		// return position at given time
+	public Point2D.Double getPositionClosestToTime(long time) {
+		botStatPoint bS = getStatClosestToTime(time);
+		if (bS == null) return null;
+		return bS.getPosition();
+	}
+	public botStatPoint getStatClosestToTime(long time) {
+		// return position at time closest to requires
+		// if exact match is unavailable returns,
+		// returns first known in the future with respect to requested time
 		// the main use to find exactly previous time for
 		// enemy bullets targeting.
 		// Thus we count from the end
@@ -181,10 +188,25 @@ public class InfoBot {
 				// we started with lagest/oldest timeTic
 				// and now passed the required time
 				// everything else is before required time
-				return null;
+				// pull back on step in future
+				return botStats.get(i+1);
 			}
 		}
 		return null; // no matched time found, but we should not be here at all
+	}
+
+	public botStatPoint getStatAtTime(long time) {
+		// return position at given time
+		// the main use to find exactly previous time for
+		// enemy bullets targeting.
+		// Thus we count from the end
+		int N = botStats.size();
+		botStatPoint bS = null;
+		bS = getStatClosestToTime( time );
+		if ( bS.getTime() == time ) {
+			return bS;
+		}
+		return null; // no matched time found
 	}
 
 	public long getLastSeenTime() {
