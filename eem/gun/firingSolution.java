@@ -30,7 +30,27 @@ public class firingSolution {
 		targetPosition = (Point2D.Double) tP.clone();
 	}
 
-	public void onPaint(Graphics2D g) {
+	public void onPaint(Graphics2D g, double L) {
+		if ( firingPosition == null ) {
+			logger.error( "This should not happen: the firing solution does not have firingPosition" );
+		} else {
+			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			graphics.drawRect( g, firingPosition, 20, 20 );
+		}
+
+		if ( firingAngle == Double.NaN ) {
+			logger.error( "This should not happen: the firing solution does not have firingAngle" );
+		} else {
+			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			double a = math.game_angles2cortesian( firingAngle );
+			double dx = Math.cos( Math.toRadians(a) );
+			double dy = Math.sin( Math.toDegrees(a) );
+			Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
+			graphics.drawLine( g, firingPosition,  endP );
+		}
+	}
+
+	public void onPaint(Graphics2D g ) {
 		if ( firingPosition == null ) {
 			logger.error( "This should not happen: the firing solution does not have firingPosition" );
 		} else {
