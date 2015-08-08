@@ -37,7 +37,7 @@ public class gameInfo {
 		long timeNow = myBot.getTime();
 		_radar.initTic();
 		_botsmanager.initTic( timeNow );
-		_wavesManager.cleanUpPassedWaves( _botsmanager.listOfAliveBots(), timeNow );
+		_wavesManager.initTic( timeNow );
 	}
 
 	public void run() {

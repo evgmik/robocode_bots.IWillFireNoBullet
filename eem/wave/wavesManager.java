@@ -22,7 +22,8 @@ public class  wavesManager {
 		myBot = bot;
 	}
 
-	public void initTic() {
+	public void initTic(long timeNow) {
+		remove ( getListOfPassedWaves( myBot._gameinfo._botsmanager.listOfAliveBots(), timeNow ) );
 	}
 
 	public void add( InfoBot firedBot, long firedTime, double bulletEnergy )  {
@@ -44,8 +45,8 @@ public class  wavesManager {
 		}
 	}
 
-	public void cleanUpPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
-		LinkedList<wave> wavesToRemove = new LinkedList<wave>();
+	public LinkedList<wave> getListOfPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
+		LinkedList<wave> passedWaves = new LinkedList<wave>();
 		ListIterator<wave> wLIter;
 		wLIter = Waves.listIterator();
 		while (wLIter.hasNext()) {
@@ -60,10 +61,10 @@ public class  wavesManager {
 			}
 			if ( !isWaveActive ) {
 				//wLIter.remove();
-				wavesToRemove.add( w );
+				passedWaves.add( w );
 			}
 		}
-		remove( wavesToRemove );
+		return( passedWaves );
 	}
 
 	public void onPaint(Graphics2D g) {
