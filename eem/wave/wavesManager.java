@@ -30,7 +30,22 @@ public class  wavesManager {
 		Waves.add(w);
 	}
 
+	public void add( wave w )  {
+		Waves.add( w );
+	}
+
+	public void remove(wave w) {
+		Waves.remove( w );
+	}
+
+	public void remove(LinkedList<wave> wavesToRemove) {
+		for ( wave w : wavesToRemove ) {
+			remove( w );
+		}
+	}
+
 	public void cleanUpPassedWaves(LinkedList<InfoBot> listOfAliveBots, long timeNow) {
+		LinkedList<wave> wavesToRemove = new LinkedList<wave>();
 		ListIterator<wave> wLIter;
 		wLIter = Waves.listIterator();
 		while (wLIter.hasNext()) {
@@ -44,9 +59,11 @@ public class  wavesManager {
 				}
 			}
 			if ( !isWaveActive ) {
-				wLIter.remove();
+				//wLIter.remove();
+				wavesToRemove.add( w );
 			}
 		}
+		remove( wavesToRemove );
 	}
 
 	public void onPaint(Graphics2D g) {
