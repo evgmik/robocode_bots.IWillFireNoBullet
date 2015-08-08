@@ -23,7 +23,7 @@ public class headOnGun extends baseGun {
 		if (fP == null)
 			return fSolultions;
 
-		Point2D.Double tP = fBot.getPositionClosestToTime( time );
+		Point2D.Double tP = tBot.getPositionClosestToTime( time );
 		if (tP == null)
 			return fSolultions;
 
