@@ -45,6 +45,18 @@ public class wave {
 		}
 	}
 
+	public InfoBot getFiredBot() {
+		return firedBot;
+	}
+
+	public long getFiredTime() {
+		return firedTime;
+	}
+
+	public double getBulletEnergy() {
+		return bulletEnergy;
+	}
+
 	public double getDistanceTraveledAtTime(long time) {
 		double timeInFlight = time - firedTime;
 		double distTraveled = timeInFlight * bulletSpeed;
@@ -59,7 +71,7 @@ public class wave {
 			botPos = bot.getLast().getPosition();
 		}
 		double distToBot = botPos.distance( firedPosition ); 
-		if ( distTraveled > distToBot + 2*physics.robotHalfSize )
+		if ( distTraveled > distToBot + physics.robotHalfSize )
 			return true;
 		else
 			return false;
