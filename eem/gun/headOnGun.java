@@ -1,0 +1,36 @@
+// -*- java -*-
+
+package eem.gun;
+import eem.bot.*;
+import eem.misc.*;
+
+import java.util.LinkedList;
+import java.awt.geom.Point2D;
+import java.awt.Graphics2D;
+import java.awt.Color;
+
+
+public class headOnGun extends baseGun {
+	public String gunName;
+
+	public headOnGun() {
+		gunName = "headOnGun";
+	}
+
+	public LinkedList<firingSolution> getFiringSolutions( InfoBot fBot, InfoBot tBot, long time, double bulletEnergy ) {
+		LinkedList<firingSolution> fSolultions = new LinkedList<firingSolution>();
+		Point2D.Double fP = fBot.getPositionClosestToTime( time );
+		if (fP == null)
+			return fSolultions;
+
+		Point2D.Double tP = fBot.getPositionClosestToTime( time );
+		if (tP == null)
+			return fSolultions;
+
+		firingSolution fS = new firingSolution( fP, tP );
+		fSolultions.add(fS);
+		return fSolultions;
+	}
+
+}
+
