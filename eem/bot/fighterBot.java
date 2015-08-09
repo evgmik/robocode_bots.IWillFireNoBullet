@@ -72,12 +72,12 @@ public class fighterBot implements waveListener {
 		return fS;
 	}
 
-	public boolean isItMine(wave w) {
+	public boolean isItMyWave(wave w) {
 		return ( fBot.getName().equals( w.firedBot.getName() ) );
 	}
 
 	public void waveAdded(wave w) {
-		if ( !isItMine(w) ) {
+		if ( !isItMyWave(w) ) {
 			logger.noise("bot " + fBot.getName() + " added enemy wave from " + w.firedBot.getName() );
 			waveWithBullets wB = new waveWithBullets( w );
 			baseGun g = new headOnGun();
@@ -90,7 +90,7 @@ public class fighterBot implements waveListener {
 	}
 
 	public void waveRemoved(wave w) {
-		if ( !isItMine(w) ) {
+		if ( !isItMyWave(w) ) {
 			// going over enemy waves
 			for ( waveWithBullets eW: enemyWaves ) {
 				if ( eW.equals( w ) ) {
