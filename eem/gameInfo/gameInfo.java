@@ -24,7 +24,6 @@ public class gameInfo implements botListener {
 	public basicMotion _motion;
 	public botsManager _botsmanager;
 	public wavesManager _wavesManager;
-	public radar _radar;
 
 	public static HashMap<String,fighterBot> liveBots = new HashMap<String, fighterBot>();
 	public static HashMap<String,fighterBot> deadBots = new HashMap<String, fighterBot>();;
@@ -33,8 +32,6 @@ public class gameInfo implements botListener {
 	public gameInfo(CoreBot bot) {
 		logger.noise( "----- Creating gameInfo -----" );
 		setMasterBot(bot);
-		_radar = new radar(myBot);
-		_motion = new basicMotion(myBot);
 		_wavesManager = new wavesManager(myBot);
 		_botsmanager = new botsManager( myBot, this );
 		_botsmanager.addBotListener( this );
@@ -50,13 +47,10 @@ public class gameInfo implements botListener {
 
 	public void initBattle( CoreBot b) {
 		setMasterBot( b );
-		_radar.initBattle( b );
-		_motion.initBattle( b );
 	}
 
 	public void initTic() {
 		long timeNow = myBot.getTime();
-		_radar.initTic();
 		_botsmanager.initTic( timeNow );
 		_wavesManager.initTic( timeNow );
 	}
@@ -65,15 +59,22 @@ public class gameInfo implements botListener {
 		return myBot.getTime();
 	}
 
+	public int getNumEnemyAlive() {
+		return myBot.numEnemyBotsAlive;
+	}
+
 	public void run() {
-		_radar.manage();
-		_motion.moveToPoint( new Point2D.Double(20, 20) );
+		for (fighterBot b : liveBots.values()) {
+			b.manage();
+		}
 		myBot.execute();
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
-		_radar.onScannedRobot(e);
 		_botsmanager.onScannedRobot(e);
+		for ( fighterBot b: liveBots.values() ) {
+			b.onScannedRobot(e);
+		}
 	}
 
 	public void onScannedRobot(InfoBot b) {
@@ -113,7 +114,9 @@ public class gameInfo implements botListener {
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		_botsmanager.onRobotDeath(e);
-		_radar.onRobotDeath(e);
+		for ( fighterBot b: liveBots.values() ) {
+			b.onRobotDeath(e);
+		}
 	}
 
 	public void onRobotDeath(InfoBot b){
@@ -127,7 +130,6 @@ public class gameInfo implements botListener {
 	}
 
 	public void onPaint( Graphics2D g ) {
-		_motion.onPaint(g);
 		_botsmanager.onPaint(g);
 		_wavesManager.onPaint(g);
 		long timeNow = myBot.getTime();

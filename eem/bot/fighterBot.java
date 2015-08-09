@@ -5,8 +5,10 @@ package eem.bot;
 import eem.core.*;
 import eem.event.*;
 import eem.bot.*;
+import eem.radar.*;
 import eem.wave.*;
 import eem.gameInfo.*;
+import eem.motion.*;
 import eem.gun.*;
 import eem.misc.*;
 
@@ -28,6 +30,10 @@ import robocode.Rules.*;
 public class fighterBot implements waveListener, botListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
+	protected radar _radar;
+	protected basicMotion _motion;
+
+	public botProxy proxy;
 
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
@@ -39,10 +45,31 @@ public class fighterBot implements waveListener, botListener {
 		_gameinfo = gInfo;
 		_gameinfo._wavesManager.addWaveListener( this );
 		_gameinfo._botsmanager.addBotListener( this );
+		if ( getName().equals( _gameinfo.getMasterBot().getName() )  ) {
+			// this bot is in charge of the master bot
+			proxy = new realBotProxy( _gameinfo.getMasterBot() );
+		} else {
+			// this bot is in charge of the enemy bot
+			proxy = new nullProxy( _gameinfo.getMasterBot() );
+		}
+
+		_radar = new radar( this );
+		//_motion = new basicMotion( this );
 	}
 
 	public String getName() {
 		return fBot.getName();
+	}
+
+	public Point2D.Double getPosition() {
+		return fBot.getPosition();
+	}
+	public int getNumEnemyAlive() {
+		return _gameinfo.getNumEnemyAlive();
+	}
+
+	public gameInfo getGameInfo() {
+		return _gameinfo;
 	}
 
 	public LinkedList<fighterBot> getEnemyBots() {
@@ -58,6 +85,11 @@ public class fighterBot implements waveListener, botListener {
 	}
 
 	public void initTic() {
+	}
+
+	public void manage() {
+		_radar.manage();
+		//_motion.moveToPoint( new Point2D.Double(20, 20) );
 	}
 
 	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {
@@ -108,6 +140,14 @@ public class fighterBot implements waveListener, botListener {
 				}
 			}
 		}
+	}
+
+	public void onScannedRobot(ScannedRobotEvent e) {
+		_radar.onScannedRobot(e);
+	}
+
+	public void onRobotDeath(RobotDeathEvent e) {
+		_radar.onRobotDeath(e);
 	}
 
 	public void onScannedRobot(InfoBot b) {
