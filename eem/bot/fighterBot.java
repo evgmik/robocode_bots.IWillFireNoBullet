@@ -20,6 +20,11 @@ import robocode.*;
 import robocode.util.*;
 import robocode.Rules.*;
 
+/*
+ * This is main simulator class which should handle situation as it perceived by a bot.
+ * Use it for both enemy and our own, but set motion, radar, ... methods appropriately.
+ * */
+
 public class fighterBot implements waveListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
