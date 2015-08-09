@@ -3,6 +3,7 @@
 package eem.bot;
 
 import eem.IWillFireNoBullet;
+import eem.event.*;
 import eem.bot.*;
 import eem.wave.*;
 import eem.gameInfo.*;
@@ -19,15 +20,19 @@ import robocode.*;
 import robocode.util.*;
 import robocode.Rules.*;
 
-public class fighterBot {
+public class fighterBot implements waveListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
 	protected botsManager _botsmanager;
 	protected wavesManager _wavesManager;
 
+	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
+	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
+
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
 		_gameinfo = gInfo;
+		_gameinfo._wavesManager.addWaveListener( this );
 	}
 
 	public LinkedList<InfoBot> getEnemyBots() {
@@ -65,14 +70,50 @@ public class fighterBot {
 		return fS;
 	}
 
-	public void onPaint(Graphics2D g) {
-		LinkedList<InfoBot> bots = getEnemyBots();
-		firingSolution fS = null;
-		for ( InfoBot b: bots ){
-			fS = getFiringSolutionFor( b, fBot.getLastSeenTime() );
+	public boolean isItMine(wave w) {
+		return ( fBot.getName().equals( w.firedBot.getName() ) );
+	}
+
+	public void waveAdded(wave w) {
+		if ( !isItMine(w) ) {
+			logger.noise("bot " + fBot.getName() + " added enemy wave from " + w.firedBot.getName() );
+			waveWithBullets wB = new waveWithBullets( w );
+			baseGun g = new headOnGun();
+			LinkedList<firingSolution> fSolutions =  g.getFiringSolutions( w.firedBot, fBot, w.getFiredTime(), w.getBulletEnergy() );
+			for ( firingSolution fS: fSolutions ) {
+				wB.addFiringSolution(fS);
+			}
+			enemyWaves.add(wB);
 		}
-		if ( fS != null )
-			fS.onPaint( g );
+	}
+
+	public void waveRemoved(wave w) {
+		if ( !isItMine(w) ) {
+			// going over enemy waves
+			for ( waveWithBullets eW: enemyWaves ) {
+				if ( eW.equals( w ) ) {
+					enemyWaves.remove(eW);
+					logger.dbg(fBot.getName() + ": Enemy( " + eW.getFiredBot().getName() + ")  wave is removed");
+					break;
+				}
+			}
+		} else {
+			// going over my waves
+			for ( waveWithBullets mW: myWaves ) {
+				if ( mW.equals( w ) ) {
+					myWaves.remove(mW);
+					logger.dbg(fBot.getName() + ": my wave is removed");
+					break;
+				}
+			}
+		}
+	}
+
+	public void onPaint( Graphics2D g, long timeNow ) {
+		LinkedList<InfoBot> bots = getEnemyBots();
+		for ( waveWithBullets eW: enemyWaves ) {
+			eW.onPaint( g, timeNow );
+		}
 	}
 
 }
