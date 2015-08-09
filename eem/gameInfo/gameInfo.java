@@ -40,8 +40,14 @@ public class gameInfo implements botListener {
 		_botsmanager.addBotListener( this );
 	}
 
-	public void initBattle() {
-		_radar.initBattle();
+	public void setMasterBot( CoreBot b) {
+		myBot = b;
+	}
+
+	public void initBattle( CoreBot b) {
+		setMasterBot( b );
+		_radar.initBattle( b );
+		_motion.initBattle( b );
 	}
 
 	public void initTic() {
@@ -57,7 +63,6 @@ public class gameInfo implements botListener {
 
 	public void run() {
 		_radar.manage();
-		//_motion.moveToPoint( new Point2D.Double(physics.BattleField.x/2, physics.BattleField.y/2) );
 		_motion.moveToPoint( new Point2D.Double(20, 20) );
 		myBot.execute();
 	}

@@ -96,14 +96,12 @@ public class CoreBot extends AdvancedRobot
 
 		// the part below should be done for every round
 		logger.routine("=========== Round #" + (roundCnt) + "=============");
+		myCoord = new Point2D.Double( getX(), getY() );
 
 		if ( _gameinfo == null ) {
 			_gameinfo = new gameInfo(this);
 		}
-		_gameinfo.initBattle();
-
-		myCoord = new Point2D.Double( getX(), getY() );
-
+		_gameinfo.initBattle(this);
 
 		_dangerMap = new dangerMap();
 		_dangerMap.add( new Point2D.Double(125,125) );

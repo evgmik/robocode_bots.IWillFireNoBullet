@@ -22,11 +22,16 @@ public class basicMotion {
 	public void initTic() {
 	}
 
+
 	public basicMotion() {
 	}
 
 	public basicMotion(CoreBot bot) {
-		myBot = bot;
+		initBattle( bot );
+	}
+
+	public void initBattle(CoreBot b) {
+		myBot = b;
 	}
 
 	public void moveToPoint( Point2D.Double pnt ) {

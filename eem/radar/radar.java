@@ -25,11 +25,11 @@ public class radar {
 	boolean needToTrackTarget = false;
 
 	public radar(CoreBot bot) {
-		myBot = bot;
-		initBattle();
+		initBattle(bot);
 	}
 
-	public void initBattle() {
+	public void initBattle(CoreBot b) {
+		myBot = b;
 		radarMaxRotationAngle = myBot.game_rules.RADAR_TURN_RATE ;
 		radarSpinDirection = 1;
 		needToTrackTarget = false;
