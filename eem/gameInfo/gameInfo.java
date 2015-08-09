@@ -32,7 +32,7 @@ public class gameInfo implements botListener {
 
 	public gameInfo(CoreBot bot) {
 		logger.noise( "----- Creating gameInfo -----" );
-		this.myBot = bot;
+		setMasterBot(bot);
 		_radar = new radar(myBot);
 		_motion = new basicMotion(myBot);
 		_wavesManager = new wavesManager(myBot);
@@ -42,6 +42,10 @@ public class gameInfo implements botListener {
 
 	public void setMasterBot( CoreBot b) {
 		myBot = b;
+	}
+
+	public CoreBot getMasterBot() {
+		return myBot;
 	}
 
 	public void initBattle( CoreBot b) {
