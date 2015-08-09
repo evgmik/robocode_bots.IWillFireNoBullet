@@ -30,7 +30,7 @@ public class basicMotion {
 	}
 
 	public void moveToPoint( Point2D.Double pnt ) {
-		double angle = math.shortest_arc( bearingTo(pnt) - myBot.getHeading() );
+		double angle = math.shortest_arc( math.angle2pt( myBot.myCoord, pnt) - myBot.getHeading() );
 		double dist = myBot.myCoord.distance(pnt);
 		if ( Math.abs(angle ) > 90 ) {
 			if (angle > 90 ) {
@@ -49,13 +49,6 @@ public class basicMotion {
 	}
 
 	public void onPaint(Graphics2D g) {
-	}
-
-	// --- Utils -----
-	public double bearingTo( Point2D.Double  pt) {
-		return math.shortest_arc(
-			math.cortesian2game_angles( Math.atan2( pt.y-myBot.myCoord.y, pt.x-myBot.myCoord.x )*180/Math.PI )
-			);
 	}
 
 }
