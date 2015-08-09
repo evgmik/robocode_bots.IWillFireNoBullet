@@ -28,11 +28,11 @@ import robocode.Rules.*;
 public class fighterBot implements waveListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
-	protected botsManager _botsmanager;
-	protected wavesManager _wavesManager;
 
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
+
+	public LinkedList<fighterBot> enemyBots = new LinkedList<fighterBot>();
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
@@ -40,15 +40,8 @@ public class fighterBot implements waveListener {
 		_gameinfo._wavesManager.addWaveListener( this );
 	}
 
-	public LinkedList<InfoBot> getEnemyBots() {
-		String fBotName = fBot.getName();
-		LinkedList<InfoBot> eBots = new LinkedList<InfoBot>();
-		for ( InfoBot b: _gameinfo._botsmanager.listOfAliveBots() ) {
-			if ( !fBotName.equals( b.getName() ) ) {
-				eBots.add( b );
-			}
-		}
-		return eBots;
+	public LinkedList<fighterBot> getEnemyBots() {
+		return enemyBots;
 	}
 
 	public LinkedList<waveWithBullets> getEnemyWaves() {
@@ -63,11 +56,12 @@ public class fighterBot implements waveListener {
 	}
 
 	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {
-		LinkedList<InfoBot> bots = getEnemyBots();
+		// how other bots fire at us
+		LinkedList<fighterBot> bots = getEnemyBots();
 		
 		firingSolution fS = null;
-		for ( InfoBot b: bots ){
-			fS = new firingSolution( b.getPosition(), fBot.getPosition());
+		for ( fighterBot b: bots ){
+			fS = new firingSolution( b.fBot.getPosition(), this.fBot.getPosition());
 		}
 		return fS;
 	}
@@ -112,7 +106,9 @@ public class fighterBot implements waveListener {
 	}
 
 	public void onPaint( Graphics2D g, long timeNow ) {
-		LinkedList<InfoBot> bots = getEnemyBots();
+		// draw itself
+		this.fBot.onPaint( g );
+		// draw enemy waves
 		for ( waveWithBullets eW: enemyWaves ) {
 			eW.onPaint( g, timeNow );
 		}
