@@ -21,7 +21,7 @@ import robocode.Rules.*;
 public class  botsManager {
 	public CoreBot myBot;
 
-	public static HashMap<String,InfoBot> bots     = new HashMap<String, InfoBot>();
+	public static HashMap<String,InfoBot> liveBots     = new HashMap<String, InfoBot>();
 	public static HashMap<String,InfoBot> deadBots = new HashMap<String, InfoBot>();;
 	protected double distAtWhichHitProbabilityDrops = 200.0; // phenomenological parameter
 
@@ -32,7 +32,7 @@ public class  botsManager {
 		if ( deadBots.size() >= 1) {
 			for (InfoBot dBot : deadBots.values() ) {
 				String botName = dBot.getName();
-				bots.put( botName, dBot);
+				liveBots.put( botName, dBot);
 			}
 		}
 		deadBots.clear();
@@ -41,7 +41,7 @@ public class  botsManager {
 
 	public InfoBot getBotByName(String botName) {
 		InfoBot b = null;
-		b = bots.get( botName );
+		b = liveBots.get( botName );
 		if ( null != b )
 			return b;
 		b = deadBots.get( botName );
@@ -55,7 +55,7 @@ public class  botsManager {
 	public void initTic(long ticTime) {
 		updateMyself(myBot);
 		profiler.start( "botsManager.initTic" );
-		for (InfoBot bot : bots.values()) 
+		for (InfoBot bot : liveBots.values()) 
 		{
 			bot.initTic(ticTime);
 		}
@@ -72,7 +72,7 @@ public class  botsManager {
 
 	public LinkedList<InfoBot> listOfAliveBots() {
 		LinkedList<InfoBot> l = new LinkedList<InfoBot>();
-		for (InfoBot bot : bots.values()) {
+		for (InfoBot bot : liveBots.values()) {
 			l.add(bot);
 		}
 		return l;
@@ -88,13 +88,13 @@ public class  botsManager {
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		String botName = e.getName();
-		InfoBot dBot = bots.get(botName);
+		InfoBot dBot = liveBots.get(botName);
 		deadBots.put( botName, dBot);
-		bots.remove( botName );
+		liveBots.remove( botName );
 	}
 
 	public void add(InfoBot bot) {
-		bots.put( bot.getName(), bot );
+		liveBots.put( bot.getName(), bot );
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
@@ -102,24 +102,24 @@ public class  botsManager {
 
 	public void updateMyself(CoreBot myBot) {
 		String botName = myBot.getName();
-		InfoBot iBot = bots.get(botName);
+		InfoBot iBot = liveBots.get(botName);
 		if ( iBot == null ) {
 		       	// this is newly discovered bot
 			iBot = new InfoBot(botName);
 		}
 		iBot.update( new botStatPoint(myBot) );
-		bots.put(botName, iBot);
+		liveBots.put(botName, iBot);
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		String botName = e.getName();
-		InfoBot iBot = bots.get(botName);
+		InfoBot iBot = liveBots.get(botName);
 		if ( iBot == null ) {
 		       	// this is newly discovered bot
 			iBot = new InfoBot(botName);
 		}
 		iBot.update( new botStatPoint(myBot, e) );
-		bots.put(botName, iBot);
+		liveBots.put(botName, iBot);
 		double eDrop = iBot.energyDrop();
 		if ( eDrop > 0 ) {
 			// wave/bullet is fired
@@ -131,7 +131,7 @@ public class  botsManager {
 	}
 
 	public void onPaint(Graphics2D g) {
-		for (InfoBot bot : bots.values()) 
+		for (InfoBot bot : liveBots.values()) 
 		{
 			bot.onPaint(g);
 		}
