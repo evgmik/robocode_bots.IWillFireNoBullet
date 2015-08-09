@@ -51,15 +51,12 @@ public class fighterBot implements waveListener {
 		return eBots;
 	}
 
-	public LinkedList<wave> getEnemyWaves() {
-		String fBotName = fBot.getName();
-		LinkedList<wave> eWaves = new LinkedList<wave>();
-		for ( wave w: _gameinfo._wavesManager.Waves ) {
-			if ( !fBotName.equals( w.firedBot.getName() ) ) {
-				eWaves.add( w );
-			}
-		}
-		return eWaves;
+	public LinkedList<waveWithBullets> getEnemyWaves() {
+		return enemyWaves;
+	}
+
+	public LinkedList<waveWithBullets> geMyWaves() {
+		return myWaves;
 	}
 
 	public void initTic() {
