@@ -18,14 +18,6 @@ import java.awt.Color;
 
 public class basicMotion {
 	protected CoreBot myBot;
-	protected double battleFieldHeight = 0;
-	protected double battleFieldWidth = 0;
-	protected int robotHalfSize;
-	protected double dangerForPointTouchingTheWall = 1e6; // humongous number
-	protected double dangerLevelWall = 50;
-	protected double dangerLevelCorner = 1e4;
-	protected double safe_distance_from_wall;
-
 
 	public void initTic() {
 	}
@@ -35,11 +27,6 @@ public class basicMotion {
 
 	public basicMotion(CoreBot bot) {
 		myBot = bot;
-		battleFieldWidth  = physics.BattleField.x;
-		battleFieldHeight = physics.BattleField.y;
-
-		robotHalfSize = physics.robotHalfSize;
-		safe_distance_from_wall = robotHalfSize + 2;
 	}
 
 	public void moveToPoint( Point2D.Double pnt ) {
