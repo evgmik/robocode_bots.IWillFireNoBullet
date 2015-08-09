@@ -31,7 +31,7 @@ public class CoreBot extends AdvancedRobot
 	double BodyTurnRate = game_rules.MAX_TURN_RATE;
 
 	private botVersion botVer;
-	public gameInfo _gameinfo;
+	public static gameInfo _gameinfo;
 	public dangerMap _dangerMap;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
@@ -97,7 +97,10 @@ public class CoreBot extends AdvancedRobot
 		// the part below should be done for every round
 		logger.routine("=========== Round #" + (roundCnt) + "=============");
 
-		_gameinfo = new gameInfo(this);
+		if ( _gameinfo == null ) {
+			_gameinfo = new gameInfo(this);
+		}
+		_gameinfo.initBattle();
 
 		myCoord = new Point2D.Double( getX(), getY() );
 
@@ -224,6 +227,7 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
+		_gameinfo.onRobotDeath(e);
 	}
 
 

@@ -36,6 +36,7 @@ public class  wavesManager {
 
 	public void add( wave w )  {
 		Waves.add( w );
+		logger.noise( "bot " + w.firedBot.getName() + " fired wave" );
 		for ( waveListener l : waveListeners ) {
 			l.waveAdded(w);
 		}

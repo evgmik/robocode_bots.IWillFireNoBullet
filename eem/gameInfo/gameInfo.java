@@ -31,12 +31,17 @@ public class gameInfo implements botListener {
 
 
 	public gameInfo(CoreBot bot) {
+		logger.noise( "----- Creating gameInfo -----" );
 		this.myBot = bot;
 		_radar = new radar(myBot);
 		_motion = new basicMotion(myBot);
 		_wavesManager = new wavesManager(myBot);
 		_botsmanager = new botsManager( myBot, this );
 		_botsmanager.addBotListener( this );
+	}
+
+	public void initBattle() {
+		_radar.initBattle();
 	}
 
 	public void initTic() {
@@ -97,12 +102,19 @@ public class gameInfo implements botListener {
 		liveBots.put( botName, knownBot );
 	}
 
-	public void onBotDeath(InfoBot b){
+	public void onRobotDeath(RobotDeathEvent e) {
+		_botsmanager.onRobotDeath(e);
+		_radar.onRobotDeath(e);
+	}
+
+	public void onRobotDeath(InfoBot b){
 		// here we are getting results from _botsmanager
+		logger.noise( "gameInfo: bot " + b.getName() + " is dead" );
 		String botName = b.getName();
 		fighterBot dBot = liveBots.get(botName);
 		deadBots.put( botName, dBot);
 		liveBots.remove( botName );
+		logger.noise( this.toString() );
 	}
 
 	public void onPaint( Graphics2D g ) {
@@ -113,5 +125,20 @@ public class gameInfo implements botListener {
 		for ( fighterBot fB: liveBots.values() ) {
 			fB.onPaint( g, timeNow );
 		}
+	}
+
+	public String toString() {
+		String str = "";
+		str += "Game Info stats\n";
+		str += " liveBots known = " + liveBots.size() + "\n";
+		for (fighterBot b : liveBots.values()) {
+			str += "  bot: " + b.getName() + "\n";
+		}
+		str += " deadBots known = " + deadBots.size() + "\n";
+		for (fighterBot b : deadBots.values()) {
+			str += "  bot: " + b.getName() + "\n";
+		}
+		str += _botsmanager.toString();
+		return str;
 	}
 }

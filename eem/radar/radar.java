@@ -26,9 +26,15 @@ public class radar {
 
 	public radar(CoreBot bot) {
 		myBot = bot;
+		initBattle();
+	}
+
+	public void initBattle() {
 		radarMaxRotationAngle = myBot.game_rules.RADAR_TURN_RATE ;
+		radarSpinDirection = 1;
 		needToTrackTarget = false;
 		botToSearchFor = "";
+		scannedBots = new LinkedList<String>();
 	}
 
 	public void initTic() {
@@ -43,6 +49,7 @@ public class radar {
 		double angle = 0;
 		if ( myBot.numEnemyBotsAlive == 0) {
 			// we already won, no need to do anything
+			logger.noise("radar: no enemies left");
 			return;
 		}
 
@@ -50,6 +57,7 @@ public class radar {
 			// this should be done only once at the begining of the round
 			// we have not seen all bots thus we need to do/keep sweeping
 			// performing initial sweep
+			logger.noise("radar: sweeping battle field 1st time");
 			angle = radarSpinDirection*radarMaxRotationAngle;
 			setTurnRadarRight(angle);
 			return;
@@ -71,15 +79,15 @@ public class radar {
 	}
 
 	public void refreshBotsPositions() {
-		logger.noise("Refreshing bots positons");
+		logger.noise("radar: refreshBotsPositions");
 		String bName = scannedBots.getFirst();
 		moveRadarToBot( bName );
 	}
 
 	public void moveRadarToBot( String bName ) {
-		logger.noise("Spinning radar to bot"+bName);
+		logger.noise("Spinning radar to bot " + bName);
 		double angle = 0;
-		long lastSeenDelay = myBot.ticTime -  myBot._gameinfo._botsmanager.getBotByName( bName ).getLastSeenTime();
+		long lastSeenDelay = myBot._gameinfo.getTime() -  myBot._gameinfo._botsmanager.getBotByName( bName ).getLastSeenTime();
 		if ( botToSearchFor.equals( bName ) && (lastSeenDelay > 1) ) {
 			// we already set radar motion parameters
 			angle = radarSpinDirection*radarMaxRotationAngle;
@@ -101,7 +109,8 @@ public class radar {
 
 	protected void setTurnRadarRight(double angle) {
 		double angle2rotate = math.putWithinRange(angle, -radarMaxRotationAngle, radarMaxRotationAngle);
-		logger.noise("Radar rotation angle = " + angle2rotate);
+		logger.noise("radar: sweeping direction = " + radarSpinDirection);
+		logger.noise("radar: rotation angle = " + angle2rotate);
 		myBot.setTurnRadarRight(angle2rotate);
 	}
 
@@ -119,6 +128,16 @@ public class radar {
 			}
 		}
 		scannedBots.addLast( scannedBotName );
+	}
+
+	public String toString() {
+		String str = "";
+		str += "Radar stats\n";
+		str += " bots known " + scannedBots.size() +  " out of " + myBot.numEnemyBotsAlive + " alive\n";
+		for ( String bName : scannedBots ) {
+			str += "  bot: " + bName + "\n";
+		}
+		return str;
 	}
 }
 

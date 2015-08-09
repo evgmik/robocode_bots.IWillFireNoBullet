@@ -41,6 +41,10 @@ public class fighterBot implements waveListener, botListener {
 		_gameinfo._botsmanager.addBotListener( this );
 	}
 
+	public String getName() {
+		return fBot.getName();
+	}
+
 	public LinkedList<fighterBot> getEnemyBots() {
 		return new LinkedList<fighterBot>(enemyBots.values());
 	}
@@ -90,7 +94,7 @@ public class fighterBot implements waveListener, botListener {
 			for ( waveWithBullets eW: enemyWaves ) {
 				if ( eW.equals( w ) ) {
 					enemyWaves.remove(eW);
-					logger.dbg(fBot.getName() + ": Enemy( " + eW.getFiredBot().getName() + ")  wave is removed");
+					logger.noise(fBot.getName() + ": Enemy( " + eW.getFiredBot().getName() + ")  wave is removed");
 					break;
 				}
 			}
@@ -99,7 +103,7 @@ public class fighterBot implements waveListener, botListener {
 			for ( waveWithBullets mW: myWaves ) {
 				if ( mW.equals( w ) ) {
 					myWaves.remove(mW);
-					logger.dbg(fBot.getName() + ": my wave is removed");
+					logger.noise(fBot.getName() + ": my wave is removed");
 					break;
 				}
 			}
@@ -110,7 +114,7 @@ public class fighterBot implements waveListener, botListener {
 		enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
 	}
 
-	public void onBotDeath(InfoBot b){
+	public void onRobotDeath(InfoBot b){
 		enemyBots.remove( b.getName() ) ;
 	}
 

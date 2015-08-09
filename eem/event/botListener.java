@@ -9,6 +9,6 @@ public interface botListener {
 
 	public void onScannedRobot(InfoBot b);
 
-	public void onBotDeath(InfoBot b);
+	public void onRobotDeath(InfoBot b);
 
 }

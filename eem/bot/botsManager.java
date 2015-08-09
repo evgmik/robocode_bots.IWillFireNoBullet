@@ -93,11 +93,12 @@ public class  botsManager {
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		String botName = e.getName();
+		logger.dbg( "botManager: bot " + botName + " is dead" );
 		InfoBot dBot = liveBots.get(botName);
 		deadBots.put( botName, dBot);
 		liveBots.remove( botName );
 
-		callListenersOnBotDeath( dBot );
+		callListenersOnRobotDeath( dBot );
 	}
 
 	public void add(InfoBot bot) {
@@ -149,12 +150,25 @@ public class  botsManager {
 		}
 	}
 
-	public void callListenersOnBotDeath(InfoBot b) {
+	public void callListenersOnRobotDeath(InfoBot b) {
 		for ( botListener l : botListeners ) {
-			l.onBotDeath(b);
+			l.onRobotDeath(b);
 		}
 	}
 
+	public String toString() {
+		String str = "";
+		str += "botManager stats\n";
+		str += " liveBots known = " + liveBots.size() + "\n";
+		for (InfoBot b : liveBots.values()) {
+			str += "  bot: " + b.getName() + "\n";
+		}
+		str += " deadBots known = " + deadBots.size() + "\n";
+		for (InfoBot b : deadBots.values()) {
+			str += "  bot: " + b.getName() + "\n";
+		}
+		return str;
+	}
 
 	public void onPaint(Graphics2D g) {
 		for (InfoBot bot : liveBots.values()) 
