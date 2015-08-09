@@ -3,6 +3,7 @@
 package eem.bot;
 
 import eem.core.*;
+import eem.event.*;
 import eem.bot.*;
 import eem.wave.*;
 import eem.gameInfo.*;
@@ -20,14 +21,18 @@ import robocode.Rules.*;
 
 public class  botsManager {
 	public CoreBot myBot;
+	public gameInfo _gameinfo;
 
-	public static HashMap<String,InfoBot> liveBots     = new HashMap<String, InfoBot>();
+	public static HashMap<String,InfoBot> liveBots = new HashMap<String, InfoBot>();
 	public static HashMap<String,InfoBot> deadBots = new HashMap<String, InfoBot>();;
 	protected double distAtWhichHitProbabilityDrops = 200.0; // phenomenological parameter
 
-	public botsManager(CoreBot bot) {
+	public LinkedList<botListener> botListeners = new LinkedList<botListener>();
+
+	public botsManager(CoreBot bot, gameInfo gInfo) {
 		myBot = bot;
-		updateMasterBotStatus(bot);
+		_gameinfo = gInfo;
+		//updateMasterBotStatus(bot);
 		// move deadBots to alive bots, should happen at the beginning of the round
 		if ( deadBots.size() >= 1) {
 			for (InfoBot dBot : deadBots.values() ) {
@@ -91,6 +96,8 @@ public class  botsManager {
 		InfoBot dBot = liveBots.get(botName);
 		deadBots.put( botName, dBot);
 		liveBots.remove( botName );
+
+		callListenersOnBotDeath( dBot );
 	}
 
 	public void add(InfoBot bot) {
@@ -109,6 +116,7 @@ public class  botsManager {
 		}
 		iBot.update( new botStatPoint(myBot) );
 		liveBots.put(botName, iBot);
+		_gameinfo.specialOnScannedRobot(iBot);
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
@@ -119,6 +127,7 @@ public class  botsManager {
 			iBot = new InfoBot(botName);
 		}
 		iBot.update( new botStatPoint(myBot, e) );
+		_gameinfo.specialOnScannedRobot(iBot);
 		liveBots.put(botName, iBot);
 		double eDrop = iBot.energyDrop();
 		if ( eDrop > 0 ) {
@@ -129,6 +138,23 @@ public class  botsManager {
 			myBot._gameinfo._wavesManager.add( w );
 		}
 	}
+
+	public void addBotListener(botListener l) {
+		botListeners.add(l);
+	}
+
+	public void callListenersOnScannedRobot(InfoBot b) {
+		for ( botListener l : botListeners ) {
+			l.onScannedRobot(b);
+		}
+	}
+
+	public void callListenersOnBotDeath(InfoBot b) {
+		for ( botListener l : botListeners ) {
+			l.onBotDeath(b);
+		}
+	}
+
 
 	public void onPaint(Graphics2D g) {
 		for (InfoBot bot : liveBots.values()) 

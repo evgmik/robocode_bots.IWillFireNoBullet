@@ -25,23 +25,24 @@ import robocode.Rules.*;
  * Use it for both enemy and our own, but set motion, radar, ... methods appropriately.
  * */
 
-public class fighterBot implements waveListener {
+public class fighterBot implements waveListener, botListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
 
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
 
-	public LinkedList<fighterBot> enemyBots = new LinkedList<fighterBot>();
+	public static HashMap<String,fighterBot> enemyBots = new HashMap<String, fighterBot>();
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
 		_gameinfo = gInfo;
 		_gameinfo._wavesManager.addWaveListener( this );
+		_gameinfo._botsmanager.addBotListener( this );
 	}
 
 	public LinkedList<fighterBot> getEnemyBots() {
-		return enemyBots;
+		return new LinkedList<fighterBot>(enemyBots.values());
 	}
 
 	public LinkedList<waveWithBullets> getEnemyWaves() {
@@ -103,6 +104,14 @@ public class fighterBot implements waveListener {
 				}
 			}
 		}
+	}
+
+	public void onScannedRobot(InfoBot b) {
+		enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
+	}
+
+	public void onBotDeath(InfoBot b){
+		enemyBots.remove( b.getName() ) ;
 	}
 
 	public void onPaint( Graphics2D g, long timeNow ) {
