@@ -51,10 +51,10 @@ public class botStatPoint {
 		headingDegrees = e.getHeading();
 		speed = e.getVelocity();
 		velocity = new Point2D.Double( speed*Math.sin( Math.toRadians(headingDegrees) ), speed*Math.cos( Math.toRadians(headingDegrees) ) );
-		if ( speed < 0 ) {
-			headingDegrees = math.shortest_arc( headingDegrees + 180 );
-			speed = -speed;
-		}
+		//if ( speed < 0 ) {
+			//headingDegrees = math.shortest_arc( headingDegrees + 180 );
+			//speed = -speed;
+		//}
 		energy = e.getEnergy();
 		myBotGunHeat = bot.getGunHeat();
 		dist2WallAhead = distanceToWallAhead();
@@ -75,9 +75,9 @@ public class botStatPoint {
 		headingDegrees = bot.getHeading();
 		speed = bot.getVelocity();
 		velocity = new Point2D.Double( speed*Math.sin( Math.toRadians(headingDegrees) ), speed*Math.cos( Math.toRadians(headingDegrees) ) );
-		if ( speed < 0 ) {
-			headingDegrees = math.shortest_arc( headingDegrees + 180 );
-		}
+		//if ( speed < 0 ) {
+			//headingDegrees = math.shortest_arc( headingDegrees + 180 );
+		//}
 		energy = bot.getEnergy();
 		dist2WallAhead = distanceToWallAhead();
 		//logger.dbg("bot stat = " + this.format() );
