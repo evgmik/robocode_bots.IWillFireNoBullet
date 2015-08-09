@@ -77,6 +77,23 @@ public class wave {
 			return false;
 	}
 
+	public boolean equals( wave w ) {
+		boolean ret = true;
+		if ( !this.getFiredBot().getName().equals( w.getFiredBot().getName() ) )
+			return false;
+		if ( this.getFiredTime() != w.getFiredTime() )
+			return false;
+		if ( this.getBulletEnergy() != w.getBulletEnergy() )
+			return false;
+		if ( this.firedPosition.x != w.firedPosition.x )
+			return false;
+		if ( this.firedPosition.y != w.firedPosition.y )
+			return false;
+
+		return true;
+
+	}
+
 	public void onPaint(Graphics2D g, long timeNow) {
 		g.setColor(waveColor);
 
