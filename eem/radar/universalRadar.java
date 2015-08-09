@@ -17,16 +17,15 @@ import robocode.*;
 import robocode.util.*;
 import robocode.Rules.*;
 
-public class radar {
-	protected fighterBot myBot;
-
+public class universalRadar extends baseRadar{
 	protected int radarSpinDirection =1;
 	protected static double radarMaxRotationAngle;
 	protected LinkedList<String> scannedBots = new LinkedList<String>();
 	protected String botToSearchFor = "";
 	boolean needToTrackTarget = false;
 
-	public radar(fighterBot bot) {
+	public universalRadar(fighterBot bot) {
+		super(bot);
 		initBattle(bot);
 	}
 
@@ -134,7 +133,7 @@ public class radar {
 
 	public String toString() {
 		String str = "";
-		str += "Radar stats\n";
+		str += "universalRadar stats\n";
 		str += " bots known " + scannedBots.size() +  " out of " + myBot.getNumEnemyAlive() + " alive\n";
 		for ( String bName : scannedBots ) {
 			str += "  bot: " + bName + "\n";

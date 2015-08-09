@@ -30,7 +30,7 @@ import robocode.Rules.*;
 public class fighterBot implements waveListener, botListener {
 	protected InfoBot fBot;
 	protected gameInfo _gameinfo;
-	protected radar _radar;
+	protected baseRadar _radar;
 	protected basicMotion _motion;
 
 	public botProxy proxy;
@@ -48,12 +48,13 @@ public class fighterBot implements waveListener, botListener {
 		if ( getName().equals( _gameinfo.getMasterBot().getName() )  ) {
 			// this bot is in charge of the master bot
 			proxy = new realBotProxy( _gameinfo.getMasterBot() );
+			_radar = new universalRadar( this );
 		} else {
 			// this bot is in charge of the enemy bot
 			proxy = new nullProxy( _gameinfo.getMasterBot() );
+			_radar = new nullRadar( this );
 		}
 
-		_radar = new radar( this );
 		//_motion = new basicMotion( this );
 	}
 
