@@ -2,7 +2,7 @@
 
 package eem.motion;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.misc.*;
 
 import robocode.util.*;
@@ -17,7 +17,7 @@ import java.awt.Color;
 
 
 public class basicMotion {
-	protected IWillFireNoBullet myBot;
+	protected CoreBot myBot;
 	protected double battleFieldHeight = 0;
 	protected double battleFieldWidth = 0;
 	protected int robotHalfSize;
@@ -33,7 +33,7 @@ public class basicMotion {
 	public basicMotion() {
 	}
 
-	public basicMotion(IWillFireNoBullet bot) {
+	public basicMotion(CoreBot bot) {
 		myBot = bot;
 		battleFieldWidth  = physics.BattleField.x;
 		battleFieldHeight = physics.BattleField.y;

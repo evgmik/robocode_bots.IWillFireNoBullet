@@ -2,7 +2,7 @@
 
 package eem.bot;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.misc.*;
 
 import robocode.*;
@@ -66,7 +66,7 @@ public class botStatPoint {
 		//logger.dbg("bot stat = " + this.format() );
 	}
 
-	public botStatPoint(IWillFireNoBullet bot) {
+	public botStatPoint(CoreBot bot) {
 		this();
 		double speed;
 		pos.x = bot.getX();

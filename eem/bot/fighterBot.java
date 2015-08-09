@@ -2,7 +2,7 @@
 
 package eem.bot;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.event.*;
 import eem.bot.*;
 import eem.wave.*;

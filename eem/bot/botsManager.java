@@ -2,7 +2,7 @@
 
 package eem.bot;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.bot.*;
 import eem.wave.*;
 import eem.gameInfo.*;
@@ -19,13 +19,13 @@ import robocode.util.*;
 import robocode.Rules.*;
 
 public class  botsManager {
-	public IWillFireNoBullet myBot;
+	public CoreBot myBot;
 
 	public static HashMap<String,InfoBot> bots     = new HashMap<String, InfoBot>();
 	public static HashMap<String,InfoBot> deadBots = new HashMap<String, InfoBot>();;
 	protected double distAtWhichHitProbabilityDrops = 200.0; // phenomenological parameter
 
-	public botsManager(IWillFireNoBullet bot) {
+	public botsManager(CoreBot bot) {
 		myBot = bot;
 		updateMyself(bot);
 		// move deadBots to alive bots, should happen at the beginning of the round
@@ -100,7 +100,7 @@ public class  botsManager {
 	public void onHitByBullet(HitByBulletEvent e) {
 	}
 
-	public void updateMyself(IWillFireNoBullet myBot) {
+	public void updateMyself(CoreBot myBot) {
 		String botName = myBot.getName();
 		InfoBot iBot = bots.get(botName);
 		if ( iBot == null ) {

@@ -3,7 +3,7 @@
 
 package eem.radar;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.misc.*;
 
 import java.util.Random;
@@ -16,7 +16,7 @@ import robocode.util.*;
 import robocode.Rules.*;
 
 public class radar {
-	protected IWillFireNoBullet myBot;
+	protected CoreBot myBot;
 
 	protected int radarSpinDirection =1;
 	protected static double radarMaxRotationAngle;
@@ -24,7 +24,7 @@ public class radar {
 	protected String botToSearchFor = "";
 	boolean needToTrackTarget = false;
 
-	public radar(IWillFireNoBullet bot) {
+	public radar(CoreBot bot) {
 		myBot = bot;
 		radarMaxRotationAngle = myBot.game_rules.RADAR_TURN_RATE ;
 		needToTrackTarget = false;

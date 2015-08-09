@@ -2,7 +2,7 @@
 
 package eem.wave;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.event.*;
 import eem.bot.*;
 import eem.misc.*;
@@ -16,12 +16,12 @@ import java.awt.geom.Point2D;
 import java.util.*;
 
 public class  wavesManager {
-	public IWillFireNoBullet myBot;
+	public CoreBot myBot;
 	public LinkedList<wave> Waves = new LinkedList<wave>();
 
 	public LinkedList<waveListener> waveListeners = new LinkedList<waveListener>();
 
-	public wavesManager(IWillFireNoBullet bot) {
+	public wavesManager(CoreBot bot) {
 		myBot = bot;
 	}
 

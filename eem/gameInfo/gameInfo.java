@@ -2,7 +2,7 @@
 
 package eem.gameInfo;
 
-import eem.IWillFireNoBullet;
+import eem.core.*;
 import eem.radar.*;
 import eem.motion.*;
 import eem.bot.*;
@@ -18,14 +18,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 public class gameInfo {
-	public IWillFireNoBullet myBot;
+	public CoreBot myBot;
 	public basicMotion _motion;
 	public botsManager _botsmanager;
 	public wavesManager _wavesManager;
 	public radar _radar;
 
 
-	public gameInfo(IWillFireNoBullet bot) {
+	public gameInfo(CoreBot bot) {
 		this.myBot = bot;
 		_radar = new radar(myBot);
 		_motion = new basicMotion(myBot);
