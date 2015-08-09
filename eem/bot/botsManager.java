@@ -27,7 +27,7 @@ public class  botsManager {
 
 	public botsManager(CoreBot bot) {
 		myBot = bot;
-		updateMyself(bot);
+		updateMasterBotStatus(bot);
 		// move deadBots to alive bots, should happen at the beginning of the round
 		if ( deadBots.size() >= 1) {
 			for (InfoBot dBot : deadBots.values() ) {
@@ -53,7 +53,7 @@ public class  botsManager {
 	}
 
 	public void initTic(long ticTime) {
-		updateMyself(myBot);
+		updateMasterBotStatus(myBot);
 		profiler.start( "botsManager.initTic" );
 		for (InfoBot bot : liveBots.values()) 
 		{
@@ -100,7 +100,7 @@ public class  botsManager {
 	public void onHitByBullet(HitByBulletEvent e) {
 	}
 
-	public void updateMyself(CoreBot myBot) {
+	public void updateMasterBotStatus(CoreBot myBot) {
 		String botName = myBot.getName();
 		InfoBot iBot = liveBots.get(botName);
 		if ( iBot == null ) {
