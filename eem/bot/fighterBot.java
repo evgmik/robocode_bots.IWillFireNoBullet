@@ -107,9 +107,6 @@ public class fighterBot implements waveListener, botListener {
 	public void manage() {
 		_radar.manage();
 		_motion.manage();
-		if ( isItMasterBotDriver() ) {
-			_motion.moveToPoint( new Point2D.Double(20, 20) );
-		}
 	}
 
 	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {
@@ -185,6 +182,8 @@ public class fighterBot implements waveListener, botListener {
 		for ( waveWithBullets eW: enemyWaves ) {
 			eW.onPaint( g, timeNow );
 		}
+		// draw motion
+		_motion.onPaint( g );
 	}
 
 }

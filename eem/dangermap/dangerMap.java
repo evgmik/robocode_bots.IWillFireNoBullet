@@ -8,6 +8,8 @@ import eem.wave.*;
 import eem.bot.*;
 
 import java.util.LinkedList;
+import java.util.Collections;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -43,6 +45,20 @@ public class dangerMap {
 		}
 
 	}
+
+	public void sortDangerPoints() {
+		Collections.sort(dangerPoints);
+	}
+
+	public dangerPoint getSafestPoint() {
+		sortDangerPoints();
+		return dangerPoints.getFirst();
+	}
+
+	public void clearDangerPoints() {
+		dangerPoints.clear();
+	}
+
 
 	public void onPaint(Graphics2D g) {
 		for( dangerPoint dP: dangerPoints ) {
