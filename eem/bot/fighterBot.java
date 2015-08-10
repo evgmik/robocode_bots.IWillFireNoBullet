@@ -45,17 +45,21 @@ public class fighterBot implements waveListener, botListener {
 		_gameinfo = gInfo;
 		_gameinfo._wavesManager.addWaveListener( this );
 		_gameinfo._botsmanager.addBotListener( this );
-		if ( getName().equals( _gameinfo.getMasterBot().getName() )  ) {
+		if ( isItMasterBotDriver() ) {
 			// this bot is in charge of the master bot
 			proxy = new realBotProxy( _gameinfo.getMasterBot() );
 			_radar = new universalRadar( this );
+			_motion = new basicMotion( this );
 		} else {
 			// this bot is in charge of the enemy bot
 			proxy = new nullProxy( _gameinfo.getMasterBot() );
 			_radar = new nullRadar( this );
+			_motion = new basicMotion( this );
 		}
+	}
 
-		//_motion = new basicMotion( this );
+	public boolean isItMasterBotDriver() {
+		return  getName().equals( _gameinfo.getMasterBot().getName() );  
 	}
 
 	public String getName() {
@@ -65,6 +69,11 @@ public class fighterBot implements waveListener, botListener {
 	public Point2D.Double getPosition() {
 		return fBot.getPosition();
 	}
+
+	public double getHeadingDegrees() {
+		return fBot.getHeadingDegrees();
+	}
+
 	public int getNumEnemyAlive() {
 		return _gameinfo.getNumEnemyAlive();
 	}
@@ -90,7 +99,10 @@ public class fighterBot implements waveListener, botListener {
 
 	public void manage() {
 		_radar.manage();
-		//_motion.moveToPoint( new Point2D.Double(20, 20) );
+		_motion.manage();
+		if ( isItMasterBotDriver() ) {
+			_motion.moveToPoint( new Point2D.Double(20, 20) );
+		}
 	}
 
 	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {

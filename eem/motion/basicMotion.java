@@ -3,6 +3,7 @@
 package eem.motion;
 
 import eem.core.*;
+import eem.bot.*;
 import eem.misc.*;
 
 import robocode.util.*;
@@ -17,26 +18,25 @@ import java.awt.Color;
 
 
 public class basicMotion {
-	protected CoreBot myBot;
+	protected fighterBot myBot;
 
 	public void initTic() {
 	}
 
-
 	public basicMotion() {
 	}
 
-	public basicMotion(CoreBot bot) {
+	public basicMotion(fighterBot bot) {
 		initBattle( bot );
 	}
 
-	public void initBattle(CoreBot b) {
+	public void initBattle(fighterBot b) {
 		myBot = b;
 	}
 
 	public void moveToPoint( Point2D.Double pnt ) {
-		double angle = math.shortest_arc( math.angle2pt( myBot.myCoord, pnt) - myBot.getHeading() );
-		double dist = myBot.myCoord.distance(pnt);
+		double angle = math.shortest_arc( math.angle2pt( myBot.getPosition(), pnt) - myBot.getHeadingDegrees() );
+		double dist = myBot.getPosition().distance(pnt);
 		if ( Math.abs(angle ) > 90 ) {
 			if (angle > 90 ) {
 				angle = angle - 180;
@@ -45,8 +45,20 @@ public class basicMotion {
 			}
 			dist = -dist;
 		}
-		myBot.setTurnRight(angle);
-		myBot.setAhead (dist);
+		setTurnRight(angle);
+		setAhead (dist);
+	}
+
+	public void setTurnRight( double angle) {
+		myBot.proxy.setTurnRight( angle );
+	}
+
+	public void setAhead( double dist ) {
+		myBot.proxy.setAhead( dist);
+	}
+
+	public void manage() {
+		// for basic motion we do nothing
 	}
 
 	public void makeMove() {

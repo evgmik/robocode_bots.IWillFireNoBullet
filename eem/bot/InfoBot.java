@@ -124,6 +124,14 @@ public class InfoBot {
 		}
 	}
 
+	public double getHeadingDegrees() {
+		if ( hasLast() ) {
+			return  getLast().getHeadingDegrees();
+		} else {
+			return 0;
+		}
+	}
+
 	public Point2D.Double getPosition() {
 		if ( hasLast() ) {
 			return  getLast().getPosition();
