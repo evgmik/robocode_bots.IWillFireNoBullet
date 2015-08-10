@@ -32,7 +32,6 @@ public class CoreBot extends AdvancedRobot
 
 	private botVersion botVer;
 	public static gameInfo _gameinfo;
-	public dangerMap _dangerMap;
 
 	public int numEnemyBotsAlive = 1; // we have at least one enemy in general
 	public long initTicStartTime = 0;
@@ -103,10 +102,6 @@ public class CoreBot extends AdvancedRobot
 		}
 		_gameinfo.initBattle(this);
 
-		_dangerMap = new dangerMap();
-		_dangerMap.add( new Point2D.Double(125,125) );
-		_dangerMap.add( new Point2D.Double(5,5) );
-
 		// give ScannedRobotEvent almost the highest priority,
 		// otherwise when I process bullet related events
 		// I work with old enemy bots coordinates
@@ -145,7 +140,6 @@ public class CoreBot extends AdvancedRobot
 		profiler.stop( "_gun.initTic" );
 		
 		_gameinfo.initTic();
-		_dangerMap.calculateDanger( getTime() );
 
 	}
 
@@ -238,7 +232,6 @@ public class CoreBot extends AdvancedRobot
 	
 	public void onPaint(Graphics2D g) {
 		_gameinfo.onPaint(g);
-		_dangerMap.onPaint(g);
 	}
 
 	public void onWin(WinEvent  e) {

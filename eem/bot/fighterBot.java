@@ -49,7 +49,10 @@ public class fighterBot implements waveListener, botListener {
 			// this bot is in charge of the master bot
 			proxy = new realBotProxy( _gameinfo.getMasterBot() );
 			_radar = new universalRadar( this );
-			_motion = new basicMotion( this );
+			_motion = new dangerMapMotion( this );
+			//_dangerMap.add( new Point2D.Double(125,125) );
+			//_dangerMap.add( new Point2D.Double(5,5) );
+
 		} else {
 			// this bot is in charge of the enemy bot
 			proxy = new nullProxy( _gameinfo.getMasterBot() );
@@ -64,6 +67,10 @@ public class fighterBot implements waveListener, botListener {
 
 	public String getName() {
 		return fBot.getName();
+	}
+
+	public long getTime() {
+		return _gameinfo.getTime();
 	}
 
 	public Point2D.Double getPosition() {
