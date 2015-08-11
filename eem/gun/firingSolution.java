@@ -9,6 +9,8 @@ import java.awt.Color;
 
 public class firingSolution {
 	public double firingAngle;
+	public long firingTime;
+	public double bulletEnergy;
 	public Point2D.Double firingPosition;
 	public Point2D.Double targetPosition;
 
@@ -18,16 +20,28 @@ public class firingSolution {
 		targetPosition = null;
 	}
 
-	public firingSolution( Point2D.Double fP, double angle ) {
+	public firingSolution( Point2D.Double fP, double angle, long time, double bulletEnergy ) {
 		firingAngle = angle;
 		firingPosition = (Point2D.Double) fP.clone();
 		targetPosition = null;
 	}
 
-	public firingSolution( Point2D.Double fP, Point2D.Double tP ) {
+	public firingSolution( Point2D.Double fP, Point2D.Double tP, long time, double bulletEnergy) {
 		firingAngle = math.angle2pt( fP, tP );
 		firingPosition = (Point2D.Double) fP.clone();
 		targetPosition = (Point2D.Double) tP.clone();
+	}
+
+	public double getDanger( long time, Point2D.Double dP ) {
+		double dL = 0;
+		double L = 100;
+
+		double a = math.game_angles2cortesian( firingAngle );
+		double dx = L*Math.cos( Math.toRadians(a) );
+		double dy = L*Math.sin( Math.toRadians(a) );
+		Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
+
+		return dL;
 	}
 
 	public void onPaint(Graphics2D g, double L) {

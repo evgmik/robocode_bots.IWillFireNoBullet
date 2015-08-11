@@ -52,6 +52,9 @@ public class dangerMap {
 
 	public double calculateDangerFromEnemyWaves(long time, dangerPoint dP) {
 		double dL = 0;
+		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
+			dL += eW.getDanger( time, dP.getPosition() );
+		}
 		return dL;
 	}
 

@@ -27,7 +27,7 @@ public class headOnGun extends baseGun {
 		if (tP == null)
 			return fSolultions;
 
-		firingSolution fS = new firingSolution( fP, tP );
+		firingSolution fS = new firingSolution( fP, tP, time, bulletEnergy );
 		fSolultions.add(fS);
 		return fSolultions;
 	}

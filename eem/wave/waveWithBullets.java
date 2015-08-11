@@ -23,6 +23,14 @@ public class waveWithBullets extends wave {
 		firingSolutions.add(fS);
 	}
 
+	public double getDanger( long time, Point2D.Double dP ) {
+		double dL = 0;
+		for ( firingSolution fS : firingSolutions ) {
+			dL += fS.getDanger( time, dP );
+		}
+		return dL;
+	}
+
 	public void onPaint(Graphics2D g, long timeNow) {
 		super.onPaint( g, timeNow );
 		g.setColor(waveColor);

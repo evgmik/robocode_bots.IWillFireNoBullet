@@ -123,15 +123,19 @@ public class fighterBot implements waveListener, botListener {
 		_motion.manage();
 	}
 
-	public firingSolution getFiringSolutionFor( InfoBot bot, long time ) {
-		// how other bots fire at us
-		LinkedList<fighterBot> bots = getEnemyBots();
-		
-		firingSolution fS = null;
-		for ( fighterBot b: bots ){
-			fS = new firingSolution( b.fBot.getPosition(), this.fBot.getPosition());
+	public LinkedList<firingSolution> getFiringSolutions( InfoBot tBot, long time, double bulletEnergy ) {
+		// how this bot fires to the targer bot
+		LinkedList<firingSolution> fSolutions = new LinkedList<firingSolution>();
+
+		LinkedList<firingSolution> gunFSs = null;
+		// FIXME: here should be loop over all available guns
+		baseGun g = new headOnGun();
+		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		for ( firingSolution fS: gunFSs ) {
+			fSolutions.add( fS);
 		}
-		return fS;
+		
+		return fSolutions;
 	}
 
 	public boolean isItMyWave(wave w) {
@@ -140,10 +144,12 @@ public class fighterBot implements waveListener, botListener {
 
 	public void waveAdded(wave w) {
 		if ( !isItMyWave(w) ) {
-			logger.noise("bot " + fBot.getName() + " added enemy wave from " + w.firedBot.getName() );
+			// make with bullets from enemy Bot
+			String enemyName =  w.firedBot.getName() ;
+			fighterBot eBot = enemyBots.get( enemyName );
+			logger.noise("bot " + fBot.getName() + " added enemy wave from " + enemyName );
 			waveWithBullets wB = new waveWithBullets( w );
-			baseGun g = new headOnGun();
-			LinkedList<firingSolution> fSolutions =  g.getFiringSolutions( w.firedBot, fBot, w.getFiredTime(), w.getBulletEnergy() );
+			LinkedList<firingSolution> fSolutions = eBot.getFiringSolutions( fBot, w.getFiredTime(), w.getBulletEnergy() );
 			for ( firingSolution fS: fSolutions ) {
 				wB.addFiringSolution(fS);
 			}
