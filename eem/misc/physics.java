@@ -222,4 +222,17 @@ public class physics {
 		logger.noise("distance to closest wall ahead " + dist);
 		return dist;
 	}
+
+	public double stopDistance( double velocity ) {
+		double speed = Math.abs(velocity);
+		int dist =0;
+
+		speed -= 2;
+		while ( speed > 0 ) {
+			dist += speed;
+			speed -= 2;
+		}
+		return dist;
+	}
+
 }
