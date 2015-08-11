@@ -38,7 +38,7 @@ public class fighterBot implements waveListener, botListener {
 	public LinkedList<waveWithBullets> enemyWaves = new LinkedList<waveWithBullets>();
 	public LinkedList<waveWithBullets> myWaves    = new LinkedList<waveWithBullets>();
 
-	public static HashMap<String,fighterBot> enemyBots = new HashMap<String, fighterBot>();
+	public HashMap<String,fighterBot> enemyBots = new HashMap<String, fighterBot>();
 
 	public fighterBot( InfoBot fBot, gameInfo gInfo) {
 		this.fBot = fBot;
