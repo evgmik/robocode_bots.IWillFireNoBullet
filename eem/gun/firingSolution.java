@@ -38,12 +38,17 @@ public class firingSolution {
 
 	public double getDanger( long time, Point2D.Double dP ) {
 		double dL = 0;
-		double L = 100;
+		double dangerRadius = 40;
+		double bulletDanger = 1;
 
+		double L = getDistanceTraveledAtTime( time );
 		double a = math.game_angles2cortesian( firingAngle );
 		double dx = L*Math.cos( Math.toRadians(a) );
 		double dy = L*Math.sin( Math.toRadians(a) );
 		Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
+		double dist = dP.distance( endP );
+
+		dL = bulletDanger * Math.exp( - dist/ dangerRadius );
 
 		return dL;
 	}
