@@ -187,24 +187,23 @@ public class InfoBot {
 		// Thus we count from the end
 		int N = botStats.size();
 		botStatPoint bS = null;
+		botStatPoint oldBestBS = null;
+		long oldTimeDelta = 1000000000; // ridiculously large
+		long newTimeDelta = 1000000000; // ridiculously large
 		for ( int i=N-1; i >=0; i-- ) {
+			// we start from youngest point and go into the past
 			bS = botStats.get(i);
-			if ( bS.getTime() == time ) {
-				return bS;
-			}
-			if ( bS.getTime() < time ) {
-				// we started with lagest/oldest timeTic
-				// and now passed the required time
-				// everything else is before required time
-				// pull back on step in future
-				if ( (i+1) <= (N-1) ) {
-					return botStats.get(i+1);
-				} else {
-					return null;
-				}
+			newTimeDelta = Math.abs( time - bS.getTime() );
+			if ( newTimeDelta < oldTimeDelta ) {
+				oldBestBS = bS;
+				oldTimeDelta = newTimeDelta;
+			} else {
+				// at this point delta starts to increase
+				// since time is linear no point to look further
+				break;
 			}
 		}
-		return null; // no matched time found, but we should not be here at all
+		return oldBestBS; // no matched time found, but we should not be here at all
 	}
 
 	public botStatPoint getStatAtTime(long time) {
