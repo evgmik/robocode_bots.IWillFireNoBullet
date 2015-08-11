@@ -123,7 +123,17 @@ public class  botsManager {
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		String botName = e.getName();
-		InfoBot iBot = liveBots.get(botName);
+		InfoBot iBot;
+		// check if this is former dead bot
+		iBot = deadBots.get(botName);
+		if ( iBot != null ) {
+			logger.noise("bot manager: ressurecting " + botName );
+			logger.noise("old ref " + deadBots.get( botName) );
+			logger.noise("new ref " +  iBot );
+			liveBots.put( botName, iBot );
+			deadBots.remove( botName);
+		}
+		iBot = liveBots.get(botName);
 		if ( iBot == null ) {
 		       	// this is newly discovered bot
 			iBot = new InfoBot(botName);

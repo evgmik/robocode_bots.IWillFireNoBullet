@@ -99,6 +99,9 @@ public class gameInfo implements botListener {
 		if ( knownBot != null ) {
 			// bot is known but among dead ones
 			// ressurecting it
+			logger.noise("game manager ressurecting " + botName );
+			logger.noise("old ref " + deadBots.get( botName) );
+			logger.noise("new ref " +  knownBot );
 			liveBots.put( botName, knownBot );
 			deadBots.remove( botName );
 			return;
