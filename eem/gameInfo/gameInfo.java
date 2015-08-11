@@ -88,7 +88,7 @@ public class gameInfo implements botListener {
 		// but this function is a hack since we cannot use
 		// onScannedRobot(InfoBot b)
 		String botName = b.getName();
-		logger.noise("Time: " + getTime() +" Scanned bot " + botName );
+		logger.noise("Time: " + getTime() + " Scanned bot " + botName );
 		fighterBot knownBot = null;
 	       	knownBot = liveBots.get(botName);
 		if ( knownBot != null ) {
