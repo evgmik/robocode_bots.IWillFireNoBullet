@@ -73,6 +73,16 @@ public class fighterBot implements waveListener, botListener {
 		return _gameinfo.getTime();
 	}
 
+	public double getDanger( long time, Point2D.Double dP ){
+		double dLbot = 1.0; // enemy bot normalization
+		double dRadius = 100; // effective dangerous radius of enemy Bot
+		double dL = 0;
+		double dist = 0;
+		dist = dP.distance( getPositionClosestToTime( time ) ) ;
+		dL += dLbot * Math.exp( - dist/dRadius );
+		return dL;
+	}
+
 	public Point2D.Double getPosition() {
 		return fBot.getPosition();
 	}

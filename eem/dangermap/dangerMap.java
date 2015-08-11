@@ -56,13 +56,9 @@ public class dangerMap {
 	}
 
 	public double calculateDangerFromEnemyBots(long time, dangerPoint dP) {
-		double dLbot = 1.0; // enemy bot normalization
-		double dRadius = 100; // effective dangerous radius of enemy Bot
 		double dL = 0;
-		double dist = 0;
 		for ( fighterBot eB : myBot.getEnemyBots() ) {
-			dist = dP.getPosition().distance( eB.getPositionClosestToTime( time ) ) ;
-			dL += dLbot * Math.exp( - dist/dRadius );
+			dL += eB.getDanger( time, dP.getPosition() );
 		}
 		return dL;
 	}
