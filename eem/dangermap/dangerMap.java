@@ -37,12 +37,12 @@ public class dangerMap {
 		ticTime = time;
 		double dL;
 		for( dangerPoint dP: dangerPoints ) {
-			dL = calculateDangerForPoint( dP, time );
+			dL = calculateDangerForPoint( time, dP );
 			dP.setDanger( dL );
 		}
 	}
 
-	public double calculateDangerForPoint( dangerPoint dP, long time) {
+	public double calculateDangerForPoint( long time, dangerPoint dP ) {
 		double dL = 0;
 		dL += calculateDangerFromWall(time, dP);
 		dL += calculateDangerFromEnemyBots(time, dP);

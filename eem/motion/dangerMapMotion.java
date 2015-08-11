@@ -42,7 +42,7 @@ public class dangerMapMotion extends basicMotion {
 		// make set of points around bot to check for danger
 		_dangerMap.clearDangerPoints();
 		buildListOfPointsToTestForDanger();
-		double dL = _dangerMap.calculateDangerForPoint( destPoint, myBot.getTime() );
+		double dL = _dangerMap.calculateDangerForPoint( myBot.getTime(), destPoint );
 		destPoint.setDanger( dL );
 		_dangerMap.reCalculateDangerMap( myBot.getTime() );
 		dangerPoint dPnew = _dangerMap.getSafestPoint();
