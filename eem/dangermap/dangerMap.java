@@ -68,11 +68,13 @@ public class dangerMap {
 
 	public double calculateDangerFromWall(long time, dangerPoint dP) {
 		double dLWall = 1e8; // very high
+		double wallDangerRadius = 100;
 		double dL = 0;
 		double dist = physics.shortestDist2wall( dP.getPosition() );
-		if ( dist <= 1.0*physics.robotHalfSize ) {
-			dL = dLWall;
+		if ( dist <= physics.robotHalfSize ) {
+			dL += dLWall;
 		}
+		dL += .2*Math.exp( -dist/wallDangerRadius );
 		return dL;
 	}
 

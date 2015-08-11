@@ -56,7 +56,7 @@ public class dangerMapMotion extends basicMotion {
 	}
 
 	private void buildListOfPointsToTestForDanger() {
-		double R = 100;
+		double R = 40;
 		int Np = 20;
 		Point2D.Double myCoord = null;
 		myCoord = myBot.getPosition();

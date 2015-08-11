@@ -58,12 +58,14 @@ public class firingSolution {
 		// let's find the danger of this point by finding the minimal
 		// distance from bullet path to the point of interest
 		double dL = 0;
-		double dangerRadius = 30;
+		double dangerRadius = physics.robotHalfSize;
 		double bulletDanger = 1;
 
 		double dist = smallestDistanceToBulletPath( dP );
 
-		dL = bulletDanger * Math.exp( - dist/ dangerRadius );
+		if ( dist <= Math.sqrt(2) * physics.robotHalfSize )
+			dL += bulletDanger;
+		dL += bulletDanger * Math.exp( - dist/ dangerRadius );
 
 		return dL;
 	}
