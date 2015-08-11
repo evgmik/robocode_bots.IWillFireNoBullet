@@ -31,14 +31,13 @@ public class waveWithBullets extends wave {
 		return dL;
 	}
 
-	public void onPaint(Graphics2D g, long timeNow) {
-		super.onPaint( g, timeNow );
+	public void onPaint(Graphics2D g, long time) {
+		super.onPaint( g, time );
 		g.setColor(waveColor);
 
 		// draw overall  wave
-		double bulletDistance = getDistanceTraveledAtTime( timeNow ) - 5;
 		for ( firingSolution fS : firingSolutions ) {
-			fS.onPaint( g, bulletDistance );
+			fS.onPaint( g, time );
 		}
 	}
 }
