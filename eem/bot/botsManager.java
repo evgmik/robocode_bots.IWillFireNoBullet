@@ -118,6 +118,7 @@ public class  botsManager {
 		iBot.update( new botStatPoint(myBot) );
 		liveBots.put(botName, iBot);
 		_gameinfo.specialOnScannedRobot(iBot);
+		callListenersOnScannedRobot( iBot );
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
@@ -130,6 +131,7 @@ public class  botsManager {
 		iBot.update( new botStatPoint(myBot, e) );
 		_gameinfo.specialOnScannedRobot(iBot);
 		liveBots.put(botName, iBot);
+		callListenersOnScannedRobot( iBot );
 		double eDrop = iBot.energyDrop();
 		if ( eDrop > 0 ) {
 			// wave/bullet is fired
