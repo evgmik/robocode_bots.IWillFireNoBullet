@@ -36,17 +36,32 @@ public class firingSolution {
 		this.bulletEnergy = bulletEnergy;
 	}
 
+	public double smallestDistanceToBulletPath( Point2D.Double p ) {
+		double a = math.game_angles2cortesian( firingAngle );
+
+		// unit velocity vector ( i.e path vector )
+		double vx = Math.cos( Math.toRadians(a) );
+		double vy = Math.sin( Math.toRadians(a) );
+
+		// vector to the point of interest
+		double dx = p.x - firingPosition.x;
+		double dy = p.y - firingPosition.y;
+
+		// closest distance is given by vector product v x d
+		double dist;
+		dist = Math.abs( vx*dy - vy*dx );
+
+		return dist;
+	}
+
 	public double getDanger( long time, Point2D.Double dP ) {
+		// let's find the danger of this point by finding the minimal
+		// distance from bullet path to the point of interest
 		double dL = 0;
-		double dangerRadius = 40;
+		double dangerRadius = 30;
 		double bulletDanger = 1;
 
-		double L = getDistanceTraveledAtTime( time );
-		double a = math.game_angles2cortesian( firingAngle );
-		double dx = L*Math.cos( Math.toRadians(a) );
-		double dy = L*Math.sin( Math.toRadians(a) );
-		Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
-		double dist = dP.distance( endP );
+		double dist = smallestDistanceToBulletPath( dP );
 
 		dL = bulletDanger * Math.exp( - dist/ dangerRadius );
 
