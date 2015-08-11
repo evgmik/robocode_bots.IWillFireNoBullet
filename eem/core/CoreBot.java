@@ -231,6 +231,11 @@ public class CoreBot extends AdvancedRobot
 	}
 	
 	public void onPaint(Graphics2D g) {
+		// If you run above you notice that time
+		// is one tic ahead of the known bots stats.
+		// This is quite a problem since even my own bot stats are not updated yet
+		// in my data structures.
+		// So do not be concerned with mis aligned locations of the bot
 		_gameinfo.onPaint(g);
 	}
 
