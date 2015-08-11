@@ -21,10 +21,11 @@ import java.awt.Color;
 public class dangerMapMotion extends basicMotion {
 	protected fighterBot myBot;
 	public dangerMap _dangerMap;
-	public dangerPoint destPoint;
+	private double superDanger = 1e8;
+	public dangerPoint destPoint = null;
 	
 	public void initTic() {
-		_dangerMap.calculateDanger( myBot.getTime() );
+		_dangerMap.reCalculateDangerMap( myBot.getTime() );
 	}
 
 	public dangerMapMotion() {
@@ -32,16 +33,21 @@ public class dangerMapMotion extends basicMotion {
 
 	public dangerMapMotion(fighterBot bot) {
 		myBot = bot;
-		initBattle( bot );
-		_dangerMap = new dangerMap();
+		initBattle( myBot );
+		_dangerMap = new dangerMap( myBot );
+		destPoint = new dangerPoint( new Point2D.Double(0,0), superDanger);
 	}
 
 	public void manage() {
 		// make set of points around bot to check for danger
 		_dangerMap.clearDangerPoints();
 		buildListOfPointsToTestForDanger();
-		_dangerMap.calculateDanger( myBot.getTime() );
-		destPoint = _dangerMap.getSafestPoint();
+		double dL = _dangerMap.calculateDangerForPoint( destPoint, myBot.getTime() );
+		destPoint.setDanger( dL );
+		_dangerMap.reCalculateDangerMap( myBot.getTime() );
+		dangerPoint dPnew = _dangerMap.getSafestPoint();
+		if ( destPoint.compareTo( dPnew ) > 0 )
+			destPoint = dPnew;
 		moveToPoint( destPoint.getPosition() );
 	}
 

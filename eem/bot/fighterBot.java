@@ -77,6 +77,10 @@ public class fighterBot implements waveListener, botListener {
 		return fBot.getPosition();
 	}
 
+	public Point2D.Double getPositionClosestToTime( long time ) {
+		return fBot.getPositionClosestToTime( time );
+	}
+
 	public double getHeadingDegrees() {
 		return fBot.getHeadingDegrees();
 	}
