@@ -225,6 +225,7 @@ public class CoreBot extends AdvancedRobot
 
 	public void onHitWall(HitWallEvent e) {
 		setTicTime();
+		logger.dbg( "tic " + getTime() + ": shame I hit wall" );
 	}
 		
 	public void onSkippedTurn(SkippedTurnEvent e) {
