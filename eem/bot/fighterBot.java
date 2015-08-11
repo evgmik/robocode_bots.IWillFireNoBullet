@@ -178,15 +178,39 @@ public class fighterBot implements waveListener, botListener {
 		enemyBots.remove( b.getName() ) ;
 	}
 
-	public void onPaint( Graphics2D g, long timeNow ) {
-		// draw itself
-		this.fBot.onPaint( g );
-		// draw enemy waves
-		for ( waveWithBullets eW: enemyWaves ) {
-			eW.onPaint( g, timeNow );
+	
+	public void drawThisBot( Graphics2D g, long timeNow ) {
+		double size = 40;
+		Point2D.Double  p = fBot.getPositionClosestToTime( timeNow );
+		if ( p != null ) {
+			g.setColor(new Color(0x00, 0x00, 0xff, 0x80));
+			graphics.drawSquare( g, p, size );
 		}
-		// draw motion
-		_motion.onPaint( g );
+	}
+
+	public void drawEnemyBot( Graphics2D g, long timeNow, fighterBot eB ) {
+		double size = 40;
+		Point2D.Double  p = eB.fBot.getPositionClosestToTime( timeNow );
+		if ( p != null ) {
+			g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
+			graphics.drawSquare( g, p, size );
+		}
+	}
+	public void onPaint( Graphics2D g, long timeNow ) {
+		if ( isItMasterBotDriver() ) {
+			// draw itself
+			drawThisBot( g, timeNow );
+			// draw enemy waves
+			for ( waveWithBullets eW: enemyWaves ) {
+				eW.onPaint( g, timeNow );
+			}
+			// draw known enemy bots
+			for ( fighterBot eB: getEnemyBots() ) {
+				drawEnemyBot( g, timeNow, eB );
+			}
+			// draw motion
+			_motion.onPaint( g );
+		}
 	}
 
 }
