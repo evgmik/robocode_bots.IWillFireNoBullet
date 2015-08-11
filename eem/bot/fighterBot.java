@@ -168,7 +168,10 @@ public class fighterBot implements waveListener, botListener {
 	}
 
 	public void onScannedRobot(InfoBot b) {
-		enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
+		if ( !getName().equals( b.getName() ) ) {
+			logger.noise("Fighter bot " + getName() + " scanned " + b.getName() );
+			enemyBots.put( b.getName(),  _gameinfo.liveBots.get( b.getName() ) );
+		}
 	}
 
 	public void onRobotDeath(InfoBot b){
