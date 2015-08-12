@@ -26,10 +26,10 @@ public class waveWithBullets extends wave {
 	public double getDanger( long time, Point2D.Double dP ) {
 		double waveDangerRadius = 50;
 		double dL = 0;
+		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
 		for ( firingSolution fS : firingSolutions ) {
 			dL += fS.getDanger( time, dP );
 		}
-		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
 		dL *= Math.exp( - Math.abs(dist)/waveDangerRadius );
 		return dL;
 	}
