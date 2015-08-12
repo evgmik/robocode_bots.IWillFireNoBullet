@@ -1,6 +1,6 @@
 # -*- make -*-
 # FILE: "/home/evmik/src/my_src/robocode_bots/robocode_bots.IWillFireNoBullet/Makefile"
-# LAST MODIFICATION: "Sat, 01 Aug 2015 12:29:42 -0400 (evmik)"
+# LAST MODIFICATION: "Tue, 11 Aug 2015 01:45:05 -0400 (evmik)"
 # (C) 2012 by Eugeniy Mikhailov, <evgmik@gmail.com>
 # $Id:$
 
@@ -35,7 +35,7 @@ release: $(RELEASEJAR)
 	cp $(RELEASEJAR) $(ROBOTS_DIR)/$(RELEASEJAR)
 
 upload: $(RELEASEJAR)
-	 rsync -rvze ssh $(RELEASEJAR) beamhome.dyndns.org:public_html/robocode/	
+	 rsync -rvze ssh $(RELEASEJAR) evmik.org:public_html/robocode/	
 
 copy-jar-test: $(ROBOTS_DIR)/$(TESTJAR)
 
