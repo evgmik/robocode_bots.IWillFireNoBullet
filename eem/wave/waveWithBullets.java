@@ -24,13 +24,18 @@ public class waveWithBullets extends wave {
 	}
 
 	public double getDanger( long time, Point2D.Double dP ) {
-		double waveDangerRadius = 50;
+		double waveDangerRadius = 100;
+		double waveDanger= 1.0;
 		double dL = 0;
 		double dist = dP.distance( firedPosition ) - getDistanceTraveledAtTime( time );
 		for ( firingSolution fS : firingSolutions ) {
 			dL += fS.getDanger( time, dP );
 		}
-		dL *= Math.exp( - Math.abs(dist)/waveDangerRadius );
+		// The danger from the far wave drops exponential with distance
+		// but close one is uniform, this should push bot perpendicularly
+		// away from enemy bullet path.
+		if ( Math.abs(dist) > waveDanger )
+			dL *= waveDanger * Math.exp( - Math.abs(dist)/waveDangerRadius );
 		return dL;
 	}
 
