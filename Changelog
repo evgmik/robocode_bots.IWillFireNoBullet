@@ -1,0 +1,12 @@
+# Changelog
+
+## v0.2
+Added linear gun to the enemies firing guns.
+Tweak to the wave danger, so HawkOnFire hit me less often, though it might be
+inverted by need to track the linear gun.
+
+## v0.1
+First release. Heavily borrowed from EvBot.
+Enemy equipped only with Head On gun. Minimal risk motion. Every bot have full
+(available to the master bot) information.
+
