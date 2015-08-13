@@ -95,6 +95,11 @@ public class firingSolution {
 			graphics.drawRect( g, firingPosition, 20, 20 );
 		}
 
+		if ( targetPosition != null ) {
+			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
+			graphics.drawRect( g, targetPosition, 20, 20 );
+		}
+
 		if ( firingAngle == Double.NaN ) {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
