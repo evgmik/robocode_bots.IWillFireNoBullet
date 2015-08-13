@@ -76,6 +76,17 @@ public class firingSolution {
 		return distTraveled;
 	}
 
+	public String toString() {
+		String str = "";
+		str += "Firing solultion at time: " + firedTime + "\n";
+		str += "firingPosition" + firingPosition + ":\n";
+		str += "firingAngle" + firingAngle + ":\n";
+		if ( targetPosition != null ) {
+			str += "targerPosition" + firingPosition + ":\n";
+		}
+		return str;
+	}
+
 	public void onPaint(Graphics2D g, long time) {
 		if ( firingPosition == null ) {
 			logger.error( "This should not happen: the firing solution does not have firingPosition" );
