@@ -135,9 +135,7 @@ public class fighterBot implements waveListener, botListener {
 		// FIXME: here should be loop over all available guns
 		baseGun g = new headOnGun();
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
-		for ( firingSolution fS: gunFSs ) {
-			fSolutions.add( fS);
-		}
+		fSolutions.addAll( gunFSs );
 		
 		return fSolutions;
 	}
