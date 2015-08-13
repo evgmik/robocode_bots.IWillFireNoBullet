@@ -68,8 +68,19 @@ public class dangerMapMotion extends basicMotion {
 			Point2D.Double p = new Point2D.Double( R*Math.cos(a), R*Math.sin(a) );
 			p.x = myCoord.x + p.x;
 			p.y = myCoord.y + p.y;
-			_dangerMap.add( p );
+			if ( isItWithReacheableSpace( p ) ) {
+				// Repeat after me, I will never probe the point
+				// where robot hits the wall or outside of the Battle field
+				_dangerMap.add( p );
+			}
 		}
+	}
+
+	public boolean isItWithReacheableSpace( Point2D.Double p ) {
+		double dist = physics.shortestDist2wall( p );
+		if ( dist < physics.robotHalfSize )
+			return false;
+		return true;
 	}
 
 	public void onPaint(Graphics2D g) {
