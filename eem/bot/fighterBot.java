@@ -136,6 +136,10 @@ public class fighterBot implements waveListener, botListener {
 		baseGun g = new headOnGun();
 		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
 		fSolutions.addAll( gunFSs );
+
+		g = new linearGun();
+		gunFSs =  g.getFiringSolutions( fBot, tBot, time, bulletEnergy ) ;
+		fSolutions.addAll( gunFSs );
 		
 		return fSolutions;
 	}
