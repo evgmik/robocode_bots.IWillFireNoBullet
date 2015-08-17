@@ -2,7 +2,7 @@
 
 package eem;
 
-import eem.core.*;
+import eem.frame.core.*;
 import robocode.*;
 
 /**
