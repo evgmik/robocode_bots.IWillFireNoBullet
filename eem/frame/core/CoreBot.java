@@ -49,8 +49,9 @@ public class CoreBot extends AdvancedRobot
 	public static int roundsLost = 0;
 	public static int  finishingPlacesStats[] = null;
 	public static int  skippedTurnStats[] = null;
+	public static int  hitWallStats[] = null;
+	public static int  hitByBulletStats[] = null;
 	public static int bulletFiredCnt = 0;
-        public static int bulletHitCnt = 0;	
         public static int bulletHitByPredictedCnt = 0;	
 	private static int numTicsWhenGunInColdState = 0;
 
@@ -89,6 +90,14 @@ public class CoreBot extends AdvancedRobot
 
 		if ( skippedTurnStats == null ) {
 			skippedTurnStats = new int[getNumRounds()];
+		}
+
+		if ( hitWallStats == null ) {
+			hitWallStats = new int[getNumRounds()];
+		}
+
+		if ( hitByBulletStats == null ) {
+			hitByBulletStats = new int[getNumRounds()];
 		}
 
 
@@ -209,6 +218,7 @@ public class CoreBot extends AdvancedRobot
 	 * onHitByBullet: What to do when you're hit by a bullet
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
+		hitByBulletStats[getRoundNum()]++;
 	}
 
 	public void  onBulletHit(BulletHitEvent e) {
@@ -223,11 +233,13 @@ public class CoreBot extends AdvancedRobot
 
 
 	public void onHitWall(HitWallEvent e) {
-		setTicTime();
+		hitWallStats[getRoundNum()]++;
 		logger.dbg( "tic " + getTime() + ": shame I hit wall" );
 	}
 		
 	public void onSkippedTurn(SkippedTurnEvent e) {
+		skippedTurnStats[getRoundNum()]++;
+		logger.routine("Skipped turn " + e.getSkippedTurn() + " reported at " + getTime() );
 	}
 	
 	public void onPaint(Graphics2D g) {
@@ -248,17 +260,14 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	public void onDeath(DeathEvent e ) {
-		setTicTime();
-		//logger.dbg("onDeath");
 		roundsLost++;
 		updateFinishingPlacesStats();
 		winOrLoseRoundEnd();
 	}
 
 	public void onRoundEnded(RoundEndedEvent e) {
-		setTicTime();
 		// this methods is called before onDeath or onWin
-		// so we should not output any valiable stats here
+		// so we should not output any valuable stats here
 		// if I want to see it at the end
 		//logger.dbg("onRoundEnded");
 		//winOrLoseRoundEnd();
@@ -267,6 +276,11 @@ public class CoreBot extends AdvancedRobot
 	public void updateFinishingPlacesStats() {
 		int myWinLosePlace = getOthers();
 		finishingPlacesStats[myWinLosePlace]++;
+		logger.routine("Hit by bullet: " + Arrays.toString(hitByBulletStats) );
+		logger.routine("Wall hits stats: " + Arrays.toString(hitWallStats) );
+		logger.routine("Skipped turns stats: " + Arrays.toString(skippedTurnStats) );
+		logger.routine("Rounds ratio of win/lose = " + roundsWon + "/" + roundsLost );
+		logger.routine("Finishing places stats: " + Arrays.toString( finishingPlacesStats ) );
 	}
 
 	public void winOrLoseRoundEnd() {
