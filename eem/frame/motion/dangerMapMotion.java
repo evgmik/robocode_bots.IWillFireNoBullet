@@ -89,7 +89,23 @@ public class dangerMapMotion extends basicMotion {
 		graphics.drawCircle(g, destPoint.getPosition(), 10);
 
 
-		_dangerMap.onPaint(g);
+		_dangerMap.onPaint(g); // motion danger map
+
+		// here I draw full danger map picture
+		dangerMap _dangerMapFull = new dangerMap( myBot );
+		// now I populate the map with dense points
+		int Npx = 20;
+		int Npy = 20;
+		for( int i=0; i < Npx; i++ ) {
+			for( int k=0; k < Npy; k++ ) {
+				Point2D.Double p = new Point2D.Double( 0,0 );
+				p.x = physics.BattleField.x / (Npx+1) * (i+1) ;
+				p.y = physics.BattleField.y / (Npy+1) * (k+1) ;
+				_dangerMapFull.add( p );
+			}
+		}
+		_dangerMapFull.reCalculateDangerMap( myBot.getTime() );
+		_dangerMapFull.onPaint(g);
 	}
 
 }
