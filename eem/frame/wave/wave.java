@@ -77,6 +77,11 @@ public class wave {
 			return false;
 	}
 
+	public double getTimeToReach( Point2D.Double p ) {
+		double distToTravel = p.distance( firedPosition );
+		return distToTravel/bulletSpeed;
+	}
+
 	public boolean equals( wave w ) {
 		boolean ret = true;
 		if ( !this.getFiredBot().getName().equals( w.getFiredBot().getName() ) )
