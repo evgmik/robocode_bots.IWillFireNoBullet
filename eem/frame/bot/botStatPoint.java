@@ -58,7 +58,7 @@ public class botStatPoint {
 		speed = bot.getVelocity();
 		energy = bot.getEnergy();
 		dist2WallAhead = distanceToWallAhead();
-		//logger.dbg("bot stat = " + this.format() );
+		//logger.dbg("Master bot stat = " + this.format() );
 	}
 
 	public botStatPoint(Point2D.Double p, long t ) {
@@ -95,6 +95,10 @@ public class botStatPoint {
 		return tStamp;
 	}
 
+	public void setTime(long t) {
+		tStamp = t;
+	}
+
 	public double getEnergy() {
 		return energy;
 	}
@@ -123,6 +127,10 @@ public class botStatPoint {
 		return speed;	
 	}
 
+	public void setSpeed( double s ) {
+		speed = s;
+	}
+
 	public Point2D.Double getVelocity() {
 		Point2D.Double velocity = new Point2D.Double( speed*Math.sin( Math.toRadians(headingDegrees) ), speed*Math.cos( Math.toRadians(headingDegrees) ) );
 		return velocity;
@@ -130,6 +138,10 @@ public class botStatPoint {
 
 	public Point2D.Double getPosition() {
 		return (Point2D.Double) pos.clone();
+	}
+
+	public void setPosition( Point2D.Double p) {
+		 pos = (Point2D.Double) p.clone();
 	}
 
 	public Double getGunHeat() {
