@@ -40,6 +40,25 @@ public class pathSimulator {
 		return _driveCommand;
 	}
 
+	public static double slowDown( double speed ) {
+		speed = Math.abs(speed);
+		if ( speed <  robocode.Rules.DECELERATION ) {
+			speed = 0;
+		}
+		else {
+			speed = speed - robocode.Rules.DECELERATION ;
+		}
+		speed = math.putWithinRange( speed, -robocode.Rules.MAX_VELOCITY, robocode.Rules.MAX_VELOCITY );
+		return speed;
+	}
+
+	public static double accelerate( double speed ) {
+		speed = Math.abs(speed);
+		speed = speed + robocode.Rules.ACCELERATION;
+		speed = math.putWithinRange( speed, -robocode.Rules.MAX_VELOCITY, robocode.Rules.MAX_VELOCITY );
+		return speed;
+	}
+
 	public static  botStatPoint nextBotStatPointWithDriveCommand( botStatPoint currentBotStatPnt, driveCommand drvCmnd ) {
 		botStatPoint _nextBotStatPnt = new botStatPoint();
 		//very regimental stat point replication
@@ -55,15 +74,26 @@ public class pathSimulator {
 		angle = math.putWithinRange( angle, -maxTurnRate, maxTurnRate);
 		angle += currentBotStatPnt.getHeadingDegrees();
 
+		double _stopDistance = physics.stopDistance(speed) + Math.abs(speed);
+
 		if ( speed*dist >= 0 ) {
 			//we are accelerating (speed = 0 ==> definitely accelerating)
-			speed = speed + math.sign(dist) * robocode.Rules.ACCELERATION;
+			// however we need to take account stop distance
+			// note extra +abs(speed) we need to react one click ahead
+			if (Math.abs(dist) < _stopDistance) {
+				// FIXME: should be smarter robocode adjust velocity
+				// to make exact stop at desired point.
+				// We here do slightly worse around destination!!
+				//logger.dbg( "time to slow down !!! dist left = " + Math.abs(dist) + " stop distance = " + _stopDistance );
+				speed = math.sign(speed) * slowDown( speed);
+			} else {
+				speed = math.sign(speed) * accelerate(speed);
+			}
 		} else {
-			// slowing down
-			speed = speed + math.sign(dist) * robocode.Rules.DECELERATION ;
+			// reversing speed direction
+			speed = math.sign(speed) * slowDown( speed);
 		}
 		speed = math.putWithinRange( speed, -robocode.Rules.MAX_VELOCITY, robocode.Rules.MAX_VELOCITY );
-		//logger.dbg("time = " + tStamp);
 			
 
 		_nextBotStatPnt.setHeadingDegrees( angle );
@@ -95,7 +125,7 @@ public class pathSimulator {
 			nextPnt = nextBotStatPointOnAWayToo( prevPnt, destPnt );
 			pathPoints.add( nextPnt);
 			prevPnt = nextPnt;
-		} while ( cnt <= maxSteps );
+		} while ( cnt < maxSteps );
 		return pathPoints;
 	}
 
