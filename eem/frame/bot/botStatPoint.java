@@ -34,7 +34,6 @@ public class botStatPoint {
 
 	public botStatPoint(AdvancedRobot bot, ScannedRobotEvent e ) {
 		this();
-		double speed;
 		Point2D.Double myCoord = new Point2D.Double();
 		myCoord.x = bot.getX();
 	       	myCoord.y = bot.getY();
@@ -52,7 +51,6 @@ public class botStatPoint {
 
 	public botStatPoint(CoreBot bot) {
 		this();
-		double speed;
 		pos.x = bot.getX();
 	       	pos.y = bot.getY();
 		tStamp = bot.getTime();
