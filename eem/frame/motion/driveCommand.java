@@ -13,4 +13,12 @@ public class driveCommand {
 		turnRightAngleDegrees = angle;
 		moveAheadDist = dist;
 	}
+
+	public double getTurnRightAngle() {
+		return turnRightAngleDegrees;
+	}
+
+	public double getMoveAheadDist() {
+		return moveAheadDist;
+	}
 }
