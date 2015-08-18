@@ -223,7 +223,7 @@ public class physics {
 		return dist;
 	}
 
-	public double stopDistance( double velocity ) {
+	public static double stopDistance( double velocity ) {
 		double speed = Math.abs(velocity);
 		int dist =0;
 
