@@ -3,6 +3,7 @@
 package eem.frame.motion;
 
 import eem.frame.core.*;
+import eem.frame.motion.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 
@@ -35,18 +36,9 @@ public class basicMotion {
 	}
 
 	public void moveToPoint( Point2D.Double pnt ) {
-		double angle = math.shortest_arc( math.angle2pt( myBot.getPosition(), pnt) - myBot.getHeadingDegrees() );
-		double dist = myBot.getPosition().distance(pnt);
-		if ( Math.abs(angle ) > 90 ) {
-			if (angle > 90 ) {
-				angle = angle - 180;
-			} else {
-				angle = angle + 180;
-			}
-			dist = -dist;
-		}
-		setTurnRight(angle);
-		setAhead (dist);
+		driveCommand _driveCommand = pathSimulator.moveToPointDriveCommand( myBot.getPosition(), myBot.getHeadingDegrees(), pnt );
+		setTurnRight(_driveCommand.turnRightAngleDegrees);
+		setAhead (_driveCommand.moveAheadDist);
 	}
 
 	public void setTurnRight( double angle) {
