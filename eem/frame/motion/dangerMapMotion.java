@@ -3,12 +3,14 @@
 package eem.frame.motion;
 
 import eem.frame.core.*;
+import eem.frame.motion.*;
 import eem.frame.dangermap.*;
 import eem.frame.bot.*;
 import eem.frame.misc.*;
 
 import robocode.util.*;
 
+import java.util.*;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -40,15 +42,26 @@ public class dangerMapMotion extends basicMotion {
 
 	public void manage() {
 		// make set of points around bot to check for danger
+		logger.dbg("current path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
+		logger.dbg("----");
 		_dangerMap.clearDangerPoints();
 		buildListOfPointsToTestForDanger();
 		double dL = _dangerMap.calculateDangerForPoint( myBot.getTime(), destPoint );
 		destPoint.setDanger( dL );
 		_dangerMap.reCalculateDangerMap( myBot.getTime() );
 		dangerPoint dPnew = _dangerMap.getSafestPoint();
-		if ( destPoint.compareTo( dPnew ) > 0 )
+		if ( destPoint.compareTo( dPnew ) > 0 ) {
 			destPoint = dPnew;
+		}
 		moveToPoint( destPoint.getPosition() );
+		// here I check exact path simulator
+		Point2D.Double pp = new Point2D.Double(300, 300);
+		destPoint = new dangerPoint( pp , 0.1);
+		moveToPoint( pp );
+		long maxSteps = 1;
+		LinkedList<botStatPoint> path = pathSimulator.getPathTo( destPoint.getPosition(), myBot.getStatClosestToTime( myBot.getTime() ), maxSteps );
+		logger.dbg("expected path point = " + path.getFirst().format() );
+		// end of exact check
 	}
 
 	public void makeMove() {
