@@ -134,6 +134,11 @@ public class botStatPoint {
 		return headingDegrees;
 	}
 
+	public void setHeadingDegrees(double angle) {
+		headingDegrees = angle;
+	}
+
+
 	public double getHeadingRadians() {
 		return Math.toRadians( headingDegrees );
 	}
