@@ -68,7 +68,7 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 
 	public String toString() {
 		String str = "";
-		logger.dbg("Point " + botStat.format() + "\n" + " has danger level = " + dangerLevel);
+		str += "Point " + botStat.format() + "\n" + " has danger level = " + dangerLevel;
 		return str;
 	}
 
