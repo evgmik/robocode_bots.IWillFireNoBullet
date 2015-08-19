@@ -49,6 +49,7 @@ public class fighterBot implements waveListener, botListener {
 			// this bot is in charge of the master bot
 			proxy = new realBotProxy( _gameinfo.getMasterBot() );
 			_radar = new universalRadar( this );
+			//_motion = new dangerMapMotion( this );
 			_motion = new exactPathDangerMotion( this );
 			//_dangerMap.add( new Point2D.Double(125,125) );
 			//_dangerMap.add( new Point2D.Double(5,5) );
@@ -160,6 +161,16 @@ public class fighterBot implements waveListener, botListener {
 				wB.addFiringSolution(fS);
 			}
 			enemyWaves.add(wB);
+			// calculate time when wave hits us if we do not move
+			double hitTime =  w.getFiredTime() + w.getTimeToReach( fBot.getPosition() );
+
+			long safetyMargin = 5;
+			hitTime += safetyMargin;
+			long ticsToHit = (long) hitTime - getTime();
+			if ( ticsToHit  > 0 ) {
+				// this wave will reach us at hitTime in the future
+				_motion.choseNewPath( ticsToHit );
+			}
 		}
 	}
 
