@@ -24,7 +24,7 @@ public class exactPathDangerMotion extends basicMotion {
 	protected fighterBot myBot;
 	private double superDanger = 1e8;
 	public dangerPoint destPoint = null;
-	LinkedList<botStatPoint> path = new LinkedList<botStatPoint>();
+	dangerPath path = new dangerPath();
 	
 	public void initTic() {
 	}
@@ -47,7 +47,7 @@ public class exactPathDangerMotion extends basicMotion {
 				logger.warning("--- Check path simulator! ---");
 				logger.warning("path size " + path.size() );
 				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
-				logger.warning("expected path point = " + path.getFirst().format() );
+				logger.warning("expected path point = " + path.getFirst().toString() );
 			}
 			// end of algorithm check
 
@@ -61,14 +61,27 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath() {
-		Point2D.Double pp = (Point2D.Double) myBot.getPosition().clone();
-		double a= 2*Math.PI * Math.random();
-		double R = 100;
-		pp.x += R*Math.sin( a ); 
-		pp.y += R*Math.cos( a ); 
+		dangerPath pathTrial;
+		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
+		Point2D.Double pp;
+		long nTrials = 10;
 		long pathLength = 20;
-		destPoint = new dangerPoint( pp, 0 );
-		path = pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength );
+		path.setDanger(1e6); // crazy dangerous for initial sorting
+
+		for ( long i = 0; i < nTrials; i++ ) {
+			pp = new Point2D.Double(0,0);
+			double a= 2*Math.PI * Math.random();
+			double R = 100; // * Math.random();
+			pp.x = myPos.x + R*Math.cos( a ); 
+			pp.y = myPos.y + R*Math.sin( a ); 
+			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
+			pathTrial.calculateDanger();
+			if ( path.getDanger() > pathTrial.getDanger() ) {
+				logger.dbg("Choosing new path with danger = " + pathTrial.getDanger()); 
+				path = pathTrial;
+				destPoint = new dangerPoint( pp, 0 );
+			}
+		}
 	}
 
 	public void makeMove() {
@@ -86,6 +99,8 @@ public class exactPathDangerMotion extends basicMotion {
 		// mark destination point
 		g.setColor(new Color(0x00, 0xff, 0x00, 0x80));
 		graphics.drawCircle(g, destPoint.getPosition(), 10);
+
+		path.onPaint(g);
 
 
 		// here I draw full danger map picture
