@@ -27,17 +27,13 @@ public class dangerPathPoint implements Comparable<dangerPathPoint> {
 		return dangerLevel;
 	}
 
-	public double calculateDanger() {
+	public double calculateDanger( fighterBot myBot ) {
 		double dL = 0;
-		// FIXME: add calculations
-		// DANGER from wall: should be in helper functions
-		double dLWall = 10000; // should be high to avoid these points
-		double wallDangerRadius = 5;
-		double dist = physics.shortestDist2wall( getPosition() );
-		if ( dist <= physics.robotHalfSize ) {
-			dL += dLWall;
-		}
-		//dL += dLWall*Math.exp( -(dist-physics.robotHalfSize)/wallDangerRadius );
+		long time = botStat.getTime();
+		dL += dangerCalc.calculateDangerFromWall(time, botStat.getPosition(), myBot);
+		dL += dangerCalc.calculateDangerFromEnemyBots(time, botStat.getPosition(), myBot);
+		// FIXME: we do not need precursors from waves
+		dL += dangerCalc.calculateDangerFromEnemyWaves(time, botStat.getPosition(), myBot);
 		setDanger(dL);
 		return dL;
 	}
