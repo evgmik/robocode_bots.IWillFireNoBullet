@@ -25,6 +25,7 @@ public class exactPathDangerMotion extends basicMotion {
 	private double superDanger = 1e8;
 	public dangerPoint destPoint = null;
 	dangerPath path = new dangerPath();
+	long minimalPathLength = 10;
 	
 	public void initTic() {
 	}
@@ -62,12 +63,12 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath() {
-		long pathLength = 10;
-		choseNewPath( pathLength );
+		choseNewPath( minimalPathLength );
 	}
 
 	public void choseNewPath( long pathLength ) {
 		dangerPath pathTrial;
+		pathLength = Math.max( minimalPathLength, pathLength );
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		Point2D.Double pp;
 		long nTrials = 50;
