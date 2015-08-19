@@ -94,13 +94,6 @@ public class exactPathDangerMotion extends basicMotion {
 		// for basic motion we do nothing
 	}
 
-	public boolean isItWithReacheableSpace( Point2D.Double p ) {
-		double dist = physics.shortestDist2wall( p );
-		if ( dist < physics.robotHalfSize )
-			return false;
-		return true;
-	}
-
 	public void onPaint(Graphics2D g) {
 		// mark destination point
 		g.setColor(new Color(0x00, 0xff, 0x00, 0x80));
