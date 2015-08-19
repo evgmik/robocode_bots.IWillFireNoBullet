@@ -71,13 +71,13 @@ public class exactPathDangerMotion extends basicMotion {
 		pathLength = Math.max( minimalPathLength, pathLength );
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		Point2D.Double pp;
-		long nTrials = 50;
+		long nTrials = 150;
 		path.setDanger(1e6); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
 			double a= 2*Math.PI * Math.random();
-			double R = pathLength*robocode.Rules.MAX_VELOCITY; // * Math.random();
+			double R = pathLength*robocode.Rules.MAX_VELOCITY * Math.random();
 			pp.x = myPos.x + R*Math.cos( a ); 
 			pp.y = myPos.y + R*Math.sin( a ); 
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
