@@ -87,7 +87,7 @@ public class pathSimulator {
 				//logger.dbg( "time to slow down !!! dist left = " + Math.abs(dist) + " stop distance = " + _stopDistance );
 				speed = math.sign(speed) * slowDown( speed);
 			} else {
-				speed = math.sign(speed) * accelerate(speed);
+				speed = math.sign(dist) * accelerate(speed);
 			}
 		} else {
 			// reversing speed direction
