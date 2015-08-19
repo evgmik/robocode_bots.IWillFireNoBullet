@@ -22,12 +22,11 @@ import java.awt.Color;
 
 public class exactPathDangerMotion extends basicMotion {
 	protected fighterBot myBot;
-	public dangerMap _dangerMap;
 	private double superDanger = 1e8;
 	public dangerPoint destPoint = null;
+	LinkedList<botStatPoint> path = new LinkedList<botStatPoint>();
 	
 	public void initTic() {
-		_dangerMap.reCalculateDangerMap( myBot.getTime() );
 	}
 
 	public exactPathDangerMotion() {
@@ -36,57 +35,44 @@ public class exactPathDangerMotion extends basicMotion {
 	public exactPathDangerMotion(fighterBot bot) {
 		myBot = bot;
 		initBattle( myBot );
-		_dangerMap = new dangerMap( myBot );
 		destPoint = new dangerPoint( new Point2D.Double(0,0), superDanger);
 	}
 
 	public void manage() {
 		// make set of points around bot to check for danger
-		logger.dbg("current path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
-		logger.dbg("----");
-		_dangerMap.clearDangerPoints();
-		buildListOfPointsToTestForDanger();
-		double dL = _dangerMap.calculateDangerForPoint( myBot.getTime(), destPoint );
-		destPoint.setDanger( dL );
-		_dangerMap.reCalculateDangerMap( myBot.getTime() );
-		dangerPoint dPnew = _dangerMap.getSafestPoint();
-		if ( destPoint.compareTo( dPnew ) > 0 ) {
-			destPoint = dPnew;
+		// here I check exact path simulator
+		if ( path.size() >= 1 ) {
+			// NOTE: this is for algorithm mistakes notifications
+			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
+				logger.warning("--- Check path simulator! ---");
+				logger.warning("path size " + path.size() );
+				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
+				logger.warning("expected path point = " + path.getFirst().format() );
+			}
+			// end of algorithm check
+
+			path.removeFirst();
+		}
+		if ( path.size() == 0 ) {
+			choseNewPath();
 		}
 		moveToPoint( destPoint.getPosition() );
-		// here I check exact path simulator
-		Point2D.Double pp = new Point2D.Double(300, 300);
-		destPoint = new dangerPoint( pp , 0.1);
-		moveToPoint( pp );
-		long maxSteps = 1;
-		LinkedList<botStatPoint> path = pathSimulator.getPathTo( destPoint.getPosition(), myBot.getStatClosestToTime( myBot.getTime() ), maxSteps );
-		logger.dbg("expected path point = " + path.getFirst().format() );
 		// end of exact check
+	}
+
+	public void choseNewPath() {
+		Point2D.Double pp = (Point2D.Double) myBot.getPosition().clone();
+		double a= 2*Math.PI * Math.random();
+		double R = 100;
+		pp.x += R*Math.sin( a ); 
+		pp.y += R*Math.cos( a ); 
+		long pathLength = 20;
+		destPoint = new dangerPoint( pp, 0 );
+		path = pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength );
 	}
 
 	public void makeMove() {
 		// for basic motion we do nothing
-	}
-
-	private void buildListOfPointsToTestForDanger() {
-		double R = 40;
-		int Np = 20;
-		Point2D.Double myCoord = null;
-		myCoord = myBot.getPosition();
-		if ( myCoord == null ) {
-			myCoord = new Point2D.Double( 0, 0 );
-		}
-		for( int i=0; i < Np; i++ ) {
-			double a = 2*Math.PI/(Np-1) * i;
-			Point2D.Double p = new Point2D.Double( R*Math.cos(a), R*Math.sin(a) );
-			p.x = myCoord.x + p.x;
-			p.y = myCoord.y + p.y;
-			if ( isItWithReacheableSpace( p ) ) {
-				// Repeat after me, I will never probe the point
-				// where robot hits the wall or outside of the Battle field
-				_dangerMap.add( p );
-			}
-		}
 	}
 
 	public boolean isItWithReacheableSpace( Point2D.Double p ) {
@@ -101,8 +87,6 @@ public class exactPathDangerMotion extends basicMotion {
 		g.setColor(new Color(0x00, 0xff, 0x00, 0x80));
 		graphics.drawCircle(g, destPoint.getPosition(), 10);
 
-
-		_dangerMap.onPaint(g); // motion danger map
 
 		// here I draw full danger map picture
 		dangerMap _dangerMapFull = new dangerMap( myBot );
