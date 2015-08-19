@@ -49,7 +49,7 @@ public class fighterBot implements waveListener, botListener {
 			// this bot is in charge of the master bot
 			proxy = new realBotProxy( _gameinfo.getMasterBot() );
 			_radar = new universalRadar( this );
-			_motion = new dangerMapMotion( this );
+			_motion = new exactPathDangerMotion( this );
 			//_dangerMap.add( new Point2D.Double(125,125) );
 			//_dangerMap.add( new Point2D.Double(5,5) );
 
