@@ -79,15 +79,19 @@ public class botStatPoint {
 		String str = "";
 		str += "tStamp = " + tStamp;
 		str += ", ";
-		str += "position = " + pos;
+		str += "position = ["
+			+ logger.shortFormatDouble( pos.x ) 
+			+ ", "
+			+ logger.shortFormatDouble( pos.y ) 
+	      		+ "]";
 		str += ", ";
-		str += "energy = " + energy;
+		str += "energy = " + logger.shortFormatDouble(energy);
 		str += ", ";
-	       	str += "speed = " + speed;
+	       	str += "speed = " + logger.shortFormatDouble(speed);
 		str += ", ";
-	       	str += "heading = " + headingDegrees;
+	       	str += "heading = " + logger.shortFormatDouble(headingDegrees);
 		str += ", ";
-		str += "distance to " + whichWallAhead() +" wall ahead = " + getDistanceToWallAhead();
+		str += "distance to " + whichWallAhead() +" wall ahead = " + logger.shortFormatDouble( getDistanceToWallAhead() );
 		return str;
 	}
 
