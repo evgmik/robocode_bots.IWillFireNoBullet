@@ -57,6 +57,10 @@ public class basicMotion {
 		// for basic motion we do nothing
 	}
 
+	public void choseNewPath( long ticsCount ) {
+		// find new path for the following ticsCount
+	}
+
 	public void onPaint(Graphics2D g) {
 	}
 
