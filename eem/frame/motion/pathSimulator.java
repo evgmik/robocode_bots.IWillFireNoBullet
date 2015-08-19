@@ -40,6 +40,31 @@ public class pathSimulator {
 		return _driveCommand;
 	}
 
+	public static double bestSpeedToSlowDonwWithin( double dist, double speed ) {
+		dist = Math.abs(dist);
+		speed = Math.abs(speed);
+		double vmin;
+		double optimal_speed;
+		double a = robocode.Rules.DECELERATION;
+		long t = (long) Math.ceil(speed/robocode.Rules.DECELERATION); // time to stop
+		if ( t >= 2 ) {
+			vmin = (dist - a*(t-2)*(t-1)/2)/(t-1); // the speed right before the stop
+			optimal_speed = vmin + a*(t-2);
+		} else {
+			// otherwise we divide by 0 == t-1
+			// so we use simple case
+			vmin = dist;
+			optimal_speed = dist;
+		}
+		if ( vmin < 0 ) {
+			// asking for unphysical solution
+			// We need to apply brakes at full power
+			optimal_speed = speed - robocode.Rules.DECELERATION;
+		}
+		//logger.dbg("opt speed = " + optimal_speed + ",  dist = " + dist + ", speed = " + speed + ", vmin = " + vmin + ", stop time = " + t );
+		return optimal_speed;
+	}
+
 	public static double slowDown( double speed ) {
 		speed = Math.abs(speed);
 		if ( speed <  robocode.Rules.DECELERATION ) {
@@ -80,12 +105,14 @@ public class pathSimulator {
 			//we are accelerating (speed = 0 ==> definitely accelerating)
 			// however we need to take account stop distance
 			// note extra +abs(speed) we need to react one click ahead
-			if (Math.abs(dist) < _stopDistance) {
+			if (Math.abs(dist) <= _stopDistance) {
+				// we still moving forward but need to take account
+				// path for slowing down
 				// FIXME: should be smarter robocode adjust velocity
 				// to make exact stop at desired point.
 				// We here do slightly worse around destination!!
 				//logger.dbg( "time to slow down !!! dist left = " + Math.abs(dist) + " stop distance = " + _stopDistance );
-				speed = math.sign(speed) * slowDown( speed);
+				speed = math.sign(speed) * bestSpeedToSlowDonwWithin(dist, speed);
 			} else {
 				speed = math.sign(dist) * accelerate(speed);
 			}
