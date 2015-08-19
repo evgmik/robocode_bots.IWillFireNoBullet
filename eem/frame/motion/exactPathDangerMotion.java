@@ -53,6 +53,7 @@ public class exactPathDangerMotion extends basicMotion {
 
 			path.removeFirst();
 		}
+		//choseNewPath();
 		if ( path.size() == 0 ) {
 			choseNewPath();
 		}
@@ -61,23 +62,27 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath() {
+		long pathLength = 10;
+		choseNewPath( pathLength );
+	}
+
+	public void choseNewPath( long pathLength ) {
 		dangerPath pathTrial;
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		Point2D.Double pp;
-		long nTrials = 10;
-		long pathLength = 20;
+		long nTrials = 50;
 		path.setDanger(1e6); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);
 			double a= 2*Math.PI * Math.random();
-			double R = 100; // * Math.random();
+			double R = pathLength*robocode.Rules.MAX_VELOCITY; // * Math.random();
 			pp.x = myPos.x + R*Math.cos( a ); 
 			pp.y = myPos.y + R*Math.sin( a ); 
 			pathTrial = new dangerPath( pathSimulator.getPathTo( pp, myBot.getStatClosestToTime( myBot.getTime() ), pathLength ) );
-			pathTrial.calculateDanger();
+			pathTrial.calculateDanger( myBot );
 			if ( path.getDanger() > pathTrial.getDanger() ) {
-				logger.dbg("Choosing new path with danger = " + pathTrial.getDanger()); 
+				//logger.dbg("Choosing new path with danger = " + pathTrial.getDanger()); 
 				path = pathTrial;
 				destPoint = new dangerPoint( pp, 0 );
 			}
@@ -117,7 +122,7 @@ public class exactPathDangerMotion extends basicMotion {
 			}
 		}
 		_dangerMapFull.calculateDanger( myBot.getTime() );
-		_dangerMapFull.onPaint(g);
+		//_dangerMapFull.onPaint(g);
 	}
 
 }
