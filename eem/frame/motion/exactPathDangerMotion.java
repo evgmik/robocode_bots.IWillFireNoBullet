@@ -116,7 +116,7 @@ public class exactPathDangerMotion extends basicMotion {
 				_dangerMapFull.add( p );
 			}
 		}
-		_dangerMapFull.reCalculateDangerMap( myBot.getTime() );
+		_dangerMapFull.calculateDanger( myBot.getTime() );
 		_dangerMapFull.onPaint(g);
 	}
 
