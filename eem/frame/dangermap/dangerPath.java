@@ -84,13 +84,13 @@ public class dangerPath implements Comparable<dangerPath> {
 		return compare( this, p2);
 	}
 
-	public double calculateDanger() {
+	public double calculateDanger(fighterBot myBot) {
 		dangerPathPoint  dP;
 		double dL = 0;
 		ListIterator<dangerPathPoint> iter = path.listIterator();
 		while (iter.hasNext()) {
 			dP = iter.next();
-			dL += dP.calculateDanger();
+			dL += dP.calculateDanger( myBot );
 		}
 		setDanger(dL);
 		return dL;
