@@ -119,6 +119,13 @@ public class physics {
 		return  Math.min( dist2LeftOrRightWall( p ), dist2BottomOrTopWall( p ) );
 	}
 
+	public static boolean isItWithInBotReacheableSpace( Point2D.Double p ) {
+		double dist = physics.shortestDist2wall( p );
+		if ( dist < physics.robotHalfSize )
+			return false;
+		return true;
+	}
+
 	public static String whichWallAhead(Point2D.Double pos, double speed, double headingInRadians) {
 		// due to round offs bot position might appear inside of walls
 		// below give us some margin to account for it

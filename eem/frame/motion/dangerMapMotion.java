@@ -27,7 +27,7 @@ public class dangerMapMotion extends basicMotion {
 	public dangerPoint destPoint = null;
 	
 	public void initTic() {
-		_dangerMap.reCalculateDangerMap( myBot.getTime() );
+		_dangerMap.calculateDanger( myBot.getTime() );
 	}
 
 	public dangerMapMotion() {
@@ -44,9 +44,9 @@ public class dangerMapMotion extends basicMotion {
 		// make set of points around bot to check for danger
 		_dangerMap.clearDangerPoints();
 		buildListOfPointsToTestForDanger();
-		double dL = _dangerMap.calculateDangerForPoint( myBot.getTime(), destPoint );
+		double dL = destPoint.calculateDanger( myBot.getTime(), myBot );
 		destPoint.setDanger( dL );
-		_dangerMap.reCalculateDangerMap( myBot.getTime() );
+		_dangerMap.calculateDanger( myBot.getTime() );
 		dangerPoint dPnew = _dangerMap.getSafestPoint();
 		if ( destPoint.compareTo( dPnew ) > 0 ) {
 			destPoint = dPnew;
@@ -71,19 +71,12 @@ public class dangerMapMotion extends basicMotion {
 			Point2D.Double p = new Point2D.Double( R*Math.cos(a), R*Math.sin(a) );
 			p.x = myCoord.x + p.x;
 			p.y = myCoord.y + p.y;
-			if ( isItWithReacheableSpace( p ) ) {
+			if ( physics.isItWithInBotReacheableSpace( p ) ) {
 				// Repeat after me, I will never probe the point
 				// where robot hits the wall or outside of the Battle field
 				_dangerMap.add( p );
 			}
 		}
-	}
-
-	public boolean isItWithReacheableSpace( Point2D.Double p ) {
-		double dist = physics.shortestDist2wall( p );
-		if ( dist < physics.robotHalfSize )
-			return false;
-		return true;
 	}
 
 	public void onPaint(Graphics2D g) {
@@ -107,7 +100,7 @@ public class dangerMapMotion extends basicMotion {
 				_dangerMapFull.add( p );
 			}
 		}
-		_dangerMapFull.reCalculateDangerMap( myBot.getTime() );
+		_dangerMapFull.calculateDanger( myBot.getTime() );
 		_dangerMapFull.onPaint(g);
 	}
 

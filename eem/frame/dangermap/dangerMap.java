@@ -33,50 +33,15 @@ public class dangerMap {
 		dangerPoints.add( new dangerPoint(p, dangerLevel) );
 	}
 
-	public void reCalculateDangerMap(long time) {
+	public void calculateDanger(long time) {
 		ticTime = time;
 		double dL;
 		for( dangerPoint dP: dangerPoints ) {
-			dL = calculateDangerForPoint( time, dP );
-			dP.setDanger( dL );
+			dP.calculateDanger( time, myBot );
 		}
 	}
 
-	public double calculateDangerForPoint( long time, dangerPoint dP ) {
-		double dL = 0;
-		dL += calculateDangerFromWall(time, dP);
-		dL += calculateDangerFromEnemyBots(time, dP);
-		dL += calculateDangerFromEnemyWaves(time, dP);
-		return dL;
-	}
 
-	public double calculateDangerFromEnemyWaves(long time, dangerPoint dP) {
-		double dL = 0;
-		for ( waveWithBullets eW : myBot.getEnemyWaves() ) {
-			dL += eW.getDanger( time, dP.getPosition() );
-		}
-		return dL;
-	}
-
-	public double calculateDangerFromEnemyBots(long time, dangerPoint dP) {
-		double dL = 0;
-		for ( fighterBot eB : myBot.getEnemyBots() ) {
-			dL += eB.getDanger( time, dP.getPosition() );
-		}
-		return dL;
-	}
-
-	public double calculateDangerFromWall(long time, dangerPoint dP) {
-		double dLWall = 1;
-		double wallDangerRadius = 5;
-		double dL = 0;
-		double dist = physics.shortestDist2wall( dP.getPosition() );
-		if ( dist <= physics.robotHalfSize ) {
-			dL += dLWall;
-		}
-		//dL += dLWall*Math.exp( -(dist-physics.robotHalfSize)/wallDangerRadius );
-		return dL;
-	}
 
 	public void sortDangerPoints() {
 		Collections.sort(dangerPoints);

@@ -3,6 +3,7 @@
 package eem.frame.dangermap;
 
 import eem.frame.misc.*;
+import eem.frame.bot.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -28,6 +29,15 @@ public class dangerPoint implements Comparable<dangerPoint> {
 
 	public void setDanger(double dL) {
 		dangerLevel = dL;
+	}
+
+	public double calculateDanger( long time, fighterBot myBot ) {
+		double dL = 0;
+		dL += dangerCalc.calculateDangerFromWall(time, position, myBot);
+		dL += dangerCalc.calculateDangerFromEnemyBots(time, position, myBot);
+		dL += dangerCalc.calculateDangerFromEnemyWaves(time, position, myBot);
+		setDanger(dL);
+		return dL;
 	}
 
 	public Point2D.Double getPosition() {
