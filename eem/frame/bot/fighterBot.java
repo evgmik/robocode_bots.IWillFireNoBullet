@@ -32,6 +32,7 @@ public class fighterBot implements waveListener, botListener {
 	protected gameInfo _gameinfo;
 	protected baseRadar _radar;
 	protected basicMotion _motion;
+	protected long latestWaveHitTime=0;
 
 	public botProxy proxy;
 
@@ -162,13 +163,16 @@ public class fighterBot implements waveListener, botListener {
 			}
 			enemyWaves.add(wB);
 			// calculate time when wave hits us if we do not move
-			double hitTime =  w.getFiredTime() + w.getTimeToReach( fBot.getPosition() );
+			long hitTime = (long) (w.getFiredTime() + w.getTimeToReach( fBot.getPosition() ) );
 
 			long safetyMargin = 5;
 			hitTime += safetyMargin;
 			long ticsToHit = (long) hitTime - getTime();
 			if ( ticsToHit  > 0 ) {
 				// this wave will reach us at hitTime in the future
+				if ( hitTime > latestWaveHitTime ) {
+					latestWaveHitTime = hitTime;
+				}
 				_motion.choseNewPath( ticsToHit );
 			}
 		}
