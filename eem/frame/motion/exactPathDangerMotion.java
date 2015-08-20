@@ -25,8 +25,10 @@ public class exactPathDangerMotion extends basicMotion {
 	private double superDanger = 1e8;
 	public dangerPoint destPoint = null;
 	dangerPath path = new dangerPath();
-	long minimalPathMargin = (long) Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION); // so we do not end up moving to the wall without chance to stop, currently 4
-	long minimalPathLength = 4*minimalPathMargin;
+	long minimalPathLength = (long) ( 2*Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION) ); // so we do not end up moving to the wall without chance to stop, currently 4
+	// tune below to avoid skipped turns
+	long maximalPathLength = 40;
+	long nTrials = 20;
 	
 	public void initTic() {
 		// here I check exact path simulator
@@ -65,7 +67,7 @@ public class exactPathDangerMotion extends basicMotion {
 
 	public void manage() {
 		//choseNewPath();
-		if ( path.size() <= minimalPathMargin ) {
+		if ( path.size() <= minimalPathLength ) {
 			needToRecalculate = true;
 		}
 		moveToPoint( destPoint.getPosition() );
@@ -80,10 +82,9 @@ public class exactPathDangerMotion extends basicMotion {
 		profiler.start( "choseNewPath" );
 
 		dangerPath pathTrial;
-		pathLength = Math.max( minimalPathLength, pathLength );
+		pathLength = (long) math.putWithinRange( pathLength, minimalPathLength, maximalPathLength );
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		Point2D.Double pp;
-		long nTrials = 150;
 		path.setDanger(superDanger); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
