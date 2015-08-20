@@ -103,18 +103,10 @@ public class exactPathDangerMotion extends basicMotion {
 	public void makeMove() {
 		// for basic motion we do nothing
 	}
-
-	public void onPaint(Graphics2D g) {
-		// mark destination point
-		g.setColor(new Color(0x00, 0xff, 0x00, 0x80));
-		graphics.drawCircle(g, destPoint.getPosition(), 10);
-
-		path.onPaint(g);
-
-
-		// here I draw full danger map picture
+	public void drawFullDangerMap(Graphics2D g) {
+		// here I draw full danger map picture at current time
 		dangerMap _dangerMapFull = new dangerMap( myBot );
-		// now I populate the map with dense points
+		// now I populate the map points grid
 		int Npx = 20;
 		int Npy = 20;
 		for( int i=0; i < Npx; i++ ) {
@@ -126,7 +118,16 @@ public class exactPathDangerMotion extends basicMotion {
 			}
 		}
 		_dangerMapFull.calculateDanger( myBot.getTime() );
-		//_dangerMapFull.onPaint(g);
+		_dangerMapFull.onPaint(g);
+	}
+
+	public void onPaint(Graphics2D g) {
+		// mark destination point
+		g.setColor(new Color(0x00, 0xff, 0x00, 0x80));
+		graphics.drawCircle(g, destPoint.getPosition(), 10);
+
+		path.onPaint(g);
+		//drawFullDangerMap(g);
 	}
 
 }
