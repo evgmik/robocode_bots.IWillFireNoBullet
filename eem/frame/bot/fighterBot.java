@@ -122,6 +122,7 @@ public class fighterBot implements waveListener, botListener {
 	}
 
 	public void initTic() {
+		_motion.initTic();
 	}
 
 	public void manage() {
@@ -173,7 +174,8 @@ public class fighterBot implements waveListener, botListener {
 				if ( hitTime > latestWaveHitTime ) {
 					latestWaveHitTime = hitTime;
 				}
-				_motion.choseNewPath( ticsToHit );
+				_motion.needToRecalculate = true;
+				_motion.predictionEndTime = hitTime ;
 			}
 		}
 	}

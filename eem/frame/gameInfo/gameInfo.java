@@ -53,6 +53,10 @@ public class gameInfo implements botListener {
 		long timeNow = myBot.getTime();
 		_botsmanager.initTic( timeNow );
 		_wavesManager.initTic( timeNow );
+		for( fighterBot fb: liveBots.values() ) {
+			fb.initTic();
+		}
+		_wavesManager.initTic( timeNow );
 	}
 
 	public long getTime() {

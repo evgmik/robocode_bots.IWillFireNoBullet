@@ -25,9 +25,14 @@ public class exactPathDangerMotion extends basicMotion {
 	private double superDanger = 1e8;
 	public dangerPoint destPoint = null;
 	dangerPath path = new dangerPath();
-	long minimalPathLength = 10;
+	long minimalPathMargin = (long) Math.ceil(robocode.Rules.MAX_VELOCITY/robocode.Rules.DECELERATION); // so we do not end up moving to the wall without chance to stop, currently 4
+	long minimalPathLength = 4*minimalPathMargin;
 	
 	public void initTic() {
+		if (needToRecalculate) {
+			choseNewPath( predictionEndTime - myBot.getTime() );
+			needToRecalculate = false;
+		}
 	}
 
 	public exactPathDangerMotion() {
@@ -49,13 +54,14 @@ public class exactPathDangerMotion extends basicMotion {
 				logger.warning("path size " + path.size() );
 				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
 				logger.warning("expected path point = " + path.getFirst().toString() );
+				needToRecalculate = true;
 			}
 			// end of algorithm check
 
 			path.removeFirst();
 		}
 		//choseNewPath();
-		if ( path.size() == 0 ) {
+		if ( path.size() <= minimalPathMargin ) {
 			choseNewPath();
 		}
 		moveToPoint( destPoint.getPosition() );
@@ -72,7 +78,7 @@ public class exactPathDangerMotion extends basicMotion {
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
 		Point2D.Double pp;
 		long nTrials = 150;
-		path.setDanger(1e6); // crazy dangerous for initial sorting
+		path.setDanger(superDanger); // crazy dangerous for initial sorting
 
 		for ( long i = 0; i < nTrials; i++ ) {
 			pp = new Point2D.Double(0,0);

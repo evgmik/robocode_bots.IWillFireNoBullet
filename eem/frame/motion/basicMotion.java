@@ -20,6 +20,8 @@ import java.awt.Color;
 
 public class basicMotion {
 	protected fighterBot myBot;
+	public boolean needToRecalculate = true;
+	public long predictionEndTime=0;
 
 	public void initTic() {
 	}
