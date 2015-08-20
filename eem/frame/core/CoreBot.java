@@ -284,6 +284,7 @@ public class CoreBot extends AdvancedRobot
 	}
 
 	public void winOrLoseRoundEnd() {
+		logger.routine( profiler.formatAll() );
 	}
 
 }
