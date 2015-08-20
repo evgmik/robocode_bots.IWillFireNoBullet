@@ -140,13 +140,6 @@ public class CoreBot extends AdvancedRobot
 		myCoord.x = getX();
 	       	myCoord.y = getY();
 
-		
-		profiler.start( "_motion.initTic" );
-		profiler.stop( "_motion.initTic" );
-		
-		profiler.start( "_gun.initTic" );
-		profiler.stop( "_gun.initTic" );
-		
 		_gameinfo.initTic();
 
 	}
