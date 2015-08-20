@@ -61,7 +61,10 @@ public class firingSolution {
 		double dangerRadius = physics.robotHalfSize;
 		double bulletDanger = 1;
 
-		double dist = smallestDistanceToBulletPath( dP );
+		double dist;
+
+		//dist = smallestDistanceToBulletPath( dP ); // this is good for precursors
+		dist = getLocationAt( time ).distance(dP); // bullet vicinity danger
 
 		if ( dist <= Math.sqrt(2) * physics.robotHalfSize )
 			dL += bulletDanger;
