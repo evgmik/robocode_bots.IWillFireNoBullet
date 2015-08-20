@@ -77,6 +77,8 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void choseNewPath( long pathLength ) {
+		profiler.start( "choseNewPath" );
+
 		dangerPath pathTrial;
 		pathLength = Math.max( minimalPathLength, pathLength );
 		Point2D.Double myPos = (Point2D.Double) myBot.getPosition().clone();
@@ -98,6 +100,7 @@ public class exactPathDangerMotion extends basicMotion {
 				destPoint = new dangerPoint( pp, 0 );
 			}
 		}
+		profiler.stop( "choseNewPath" );
 	}
 
 	public void makeMove() {
