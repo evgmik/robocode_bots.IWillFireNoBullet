@@ -29,10 +29,28 @@ public class exactPathDangerMotion extends basicMotion {
 	long minimalPathLength = 4*minimalPathMargin;
 	
 	public void initTic() {
+		// here I check exact path simulator
+		if ( (path.size() >= 1) && !needToRecalculate ) {
+			// NOTE: this is for algorithm mistakes notifications
+			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
+				logger.warning("--- Check path simulator! ---");
+				logger.warning("path size " + path.size() );
+				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
+				logger.warning("expected path point = " + path.getFirst().toString() );
+				needToRecalculate = true;
+			}
+			// end of algorithm check
+			if ( path.size() >= 1 ) {
+				path.removeFirst();
+			}
+		} else {
+			needToRecalculate = true;
+		}
 		if (needToRecalculate) {
 			choseNewPath( predictionEndTime - myBot.getTime() );
 			needToRecalculate = false;
 		}
+
 	}
 
 	public exactPathDangerMotion() {
@@ -45,24 +63,9 @@ public class exactPathDangerMotion extends basicMotion {
 	}
 
 	public void manage() {
-		// make set of points around bot to check for danger
-		// here I check exact path simulator
-		if ( path.size() >= 1 ) {
-			// NOTE: this is for algorithm mistakes notifications
-			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
-				logger.warning("--- Check path simulator! ---");
-				logger.warning("path size " + path.size() );
-				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
-				logger.warning("expected path point = " + path.getFirst().toString() );
-				needToRecalculate = true;
-			}
-			// end of algorithm check
-
-			path.removeFirst();
-		}
 		//choseNewPath();
 		if ( path.size() <= minimalPathMargin ) {
-			choseNewPath();
+			needToRecalculate = true;
 		}
 		moveToPoint( destPoint.getPosition() );
 		// end of exact check
