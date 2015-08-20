@@ -34,6 +34,7 @@ public class exactPathDangerMotion extends basicMotion {
 			// NOTE: this is for algorithm mistakes notifications
 			if ( myBot.getPosition().distance( path.getFirst().getPosition() ) > 1 ) {
 				logger.warning("--- Check path simulator! ---");
+				logger.warning("tic time: " + myBot.getTime() );
 				logger.warning("path size " + path.size() );
 				logger.warning("current  path point = " + myBot.getStatClosestToTime( myBot.getTime() ).format() );
 				logger.warning("expected path point = " + path.getFirst().toString() );
