@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3
+Exact path calculation. Kind of slow (skipped turns) and still not always
+exact, especially when small motions with reverse direction are present.
+
 ## v0.2
 Added linear gun to the enemies firing guns.
 Tweak to the wave danger, so HawkOnFire hit me less often, though it might be
