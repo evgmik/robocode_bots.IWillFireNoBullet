@@ -76,6 +76,16 @@ public class firingSolution {
 		return distTraveled;
 	}
 
+	public Point2D.Double getLocationAt( long time ) {
+			double dist = getDistanceTraveledAtTime( time );
+			// note that dx and dy change meaning due to robocode coordinates
+			double a = math.game_angles2cortesian( firingAngle );
+			double dx = dist*Math.cos( Math.toRadians(a) );
+			double dy = dist*Math.sin( Math.toRadians(a) );
+			Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
+			return endP;
+	}
+
 	public String toString() {
 		String str = "";
 		str += "Firing solultion at time: " + firedTime + "\n";
@@ -104,12 +114,7 @@ public class firingSolution {
 			logger.error( "This should not happen: the firing solution does not have firingAngle" );
 		} else {
 			g.setColor( new Color(0xFF, 0x00, 0x00, 0xff) );
-			double dist = getDistanceTraveledAtTime( time ) - 5;
-			// note that dx and dy change meaning due to robocode coordinates
-			double a = math.game_angles2cortesian( firingAngle );
-			double dx = dist*Math.cos( Math.toRadians(a) );
-			double dy = dist*Math.sin( Math.toRadians(a) );
-			Point2D.Double endP = new Point2D.Double( firingPosition.x + dx, firingPosition.y + dy );
+			Point2D.Double endP = getLocationAt( time );
 			graphics.drawLine( g, firingPosition,  endP );
 		}
 	}
