@@ -31,11 +31,6 @@ public class waveWithBullets extends wave {
 		for ( firingSolution fS : firingSolutions ) {
 			dL += fS.getDanger( time, dP );
 		}
-		// The danger from the far wave drops exponential with distance
-		// but close one is uniform, this should push bot perpendicularly
-		// away from enemy bullet path.
-		if ( Math.abs(dist) > waveDanger )
-			dL *= waveDanger * Math.exp( - Math.abs(dist)/waveDangerRadius );
 		return dL;
 	}
 
