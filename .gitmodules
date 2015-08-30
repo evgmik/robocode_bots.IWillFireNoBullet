@@ -1,0 +1,3 @@
+[submodule "eem/eem/frame"]
+	path = eem/eem/frame
+	url = git@github.com:evgmik/robocode_bots.frame-lib.git
