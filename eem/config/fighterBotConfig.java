@@ -24,7 +24,7 @@ public class fighterBotConfig {
 			_radar = new universalRadar( bot );
 			//_motion = new dangerMapMotion( bot );
 			_motion = new exactPathDangerMotion( bot );
-			_gunManager = new masterBotGunManager( bot );
+			_gunManager = new nullGunManager( bot );
 
 		} else {
 			// this bot is in charge of the enemy bot
