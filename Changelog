@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5
+Using v0.5 framework lib
+
+## v0.4
+Using v0.4 framework lib
+
 ## v0.3
 Exact path calculation. Kind of slow (skipped turns) and still not always
 exact, especially when small motions with reverse direction are present.
