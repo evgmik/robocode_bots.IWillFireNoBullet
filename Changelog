@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1
+Framework v1.1 do not expect improvements, since framework was working on
+target selection.
+Looks like to many skipped turns are hurting melee performance.
+
 ## v1.0
 Versions of 0.6 - 1.0 skipped, since v1.0 is quite different
 
