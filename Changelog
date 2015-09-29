@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.5
+
+Added bullet shielders detection, and fire with offset to circumvent it.
+If bot hit enemy bullet, then enemy wave which carries this bullet is removed,
+since it has no danger.
+
+Exact path is attempting to find a better path every turn, but with smaller
+number of trials than full search.
+
 ## v1.4
 New framework with randomGun
 
