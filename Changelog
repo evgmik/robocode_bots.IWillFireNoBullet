@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6
+New framework with guess factor gun. Some optimization to reduce unnecessary
+CPU load.
+
 ## v1.5
 
 Added bullet shielders detection, and fire with offset to circumvent it.
