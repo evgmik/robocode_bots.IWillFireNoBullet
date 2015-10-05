@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.7
+
+New framework.
+
+Enemy fires guess factors gun too, new decaying stats guess factor gun, on
+1on1 motion more orthogonal to the line to the enemy.
+
 ## v1.6
 New framework with guess factor gun. Some optimization to reduce unnecessary
 CPU load.
