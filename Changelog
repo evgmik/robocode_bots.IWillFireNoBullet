@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0
+
+bug fix: guess factor use the lateral velocity from wrong time
+
+New gun: flipLastGuessFactorGun. I note that many bots including my own
+have next wave guess factor close to oposite of the previous wave. This gun
+tries to exploit it.
+
 ## v1.9
 
 New framework.
