@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.1
+
+new framework
+
+Remove guess factor based guns from the enemy guns array.
+These guns were introduced since v1.6 but apparently make the master bot motion more
+predictive.  It hearts IWillFireNoBullets roborumble stats,
+up to version 2.0 the APS is lower.
+Buy now enemy firing and master bot motion logic is the same as it was in
+v1.6
+
+Added enemy wave count, to implement lagging guess factor gun.
+
 ## v2.0
 
 bug fix: guess factor use the lateral velocity from wrong time
