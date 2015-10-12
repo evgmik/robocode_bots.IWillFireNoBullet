@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.2
+
+new framework
+
+In melee radar lock now 2 clicks earlier, than before. Seems to boost score
+with my test set.
+
+Circular gun falls back to linear gun scenario, if not enough history
+available.
+
+Master bot does not fire linear gun anymore, circular one does its function.
+
 ## v2.1
 
 new framework
