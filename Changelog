@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.4
+
+New framework.
+
+Fixed bug, with double counting of the master bot gun shots, which was
+introduced in v2.3
+
 ## v2.3
 
 New framework.
